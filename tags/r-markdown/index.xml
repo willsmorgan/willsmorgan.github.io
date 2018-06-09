@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Fri, 08 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/willsmorgan.github.io/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Practice Post</title>
+      <link>/willsmorgan.github.io/post/practice-post/</link>
+      <pubDate>Fri, 08 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/willsmorgan.github.io/post/practice-post/</guid>
+      <description>My name is Will Morgan and this is a test post</description>
+    </item>
     
     <item>
       <title>Hello R Markdown</title>
