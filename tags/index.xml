@@ -40,11 +40,11 @@
     </item>
     
     <item>
-      <title>Plot</title>
-      <link>/willsmorgan.github.io/tags/plot/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Parallel processing</title>
+      <link>/willsmorgan.github.io/tags/parallel-processing/</link>
+      <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/willsmorgan.github.io/tags/plot/</guid>
+      <guid>/willsmorgan.github.io/tags/parallel-processing/</guid>
       <description></description>
     </item>
     
@@ -54,6 +54,15 @@
       <pubDate>Fri, 08 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>/willsmorgan.github.io/tags/r-markdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Random forests</title>
+      <link>/willsmorgan.github.io/tags/random-forests/</link>
+      <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/willsmorgan.github.io/tags/random-forests/</guid>
       <description></description>
     </item>
     
