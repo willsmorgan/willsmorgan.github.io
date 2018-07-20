@@ -11,6 +11,100 @@
     <atom:link href="/willsmorgan.github.io/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Book Discussion - Mostly Harmless Econometrics: Chapter 1</title>
+      <link>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/</link>
+      <pubDate>Mon, 16 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/</guid>
+      <description>
+
+&lt;h4 id=&#34;motivation&#34;&gt;Motivation&lt;/h4&gt;
+
+&lt;p&gt;This will be part of a series of posts I am writing to help bring my chops on causal
+inference up to par. Since I have not taken a formal course on the subject and I won&amp;rsquo;t be
+able to for some time, self-study is my only option. Fortunately I&amp;rsquo;ve been recommended
+quite a few resources from my instructors, one of which being
+&lt;strong&gt;Mostly Harmless Econometrics&lt;/strong&gt; by Joshua D. Angrist &amp;amp; Jorn-Steffen Pischke,
+econometricians at MIT and LSE respectively.&lt;/p&gt;
+
+&lt;p&gt;This and the next handful of posts will be discussions about topics covered throughout
+the book, including short summaries, descriptions of my understanding of the concepts,
+and potential applications to my own work.&lt;/p&gt;
+
+&lt;h4 id=&#34;chapter-1-questions-about-questions&#34;&gt;Chapter 1: Questions about &lt;em&gt;Questions&lt;/em&gt;&lt;/h4&gt;
+
+&lt;p&gt;At the Action Lab there is practically an immeasurable variety of data available
+to us researchers. We have student data, institutional data, clickstream data,
+and all other sorts of data that has been collected for years and years. When I was
+dumped into this massive environment as a fresh student worker I was
+hopping around from one thing to the next, searching for ways to implement everything
+I had learned in class and hoping to find great insights everywhere I went. As any
+experienced researcher would expect, this ended up wasting a lot of time. I wrote
+tons of cleaning and modeling scripts for projects that eventually were
+thrown into the &amp;ldquo;revisit this&amp;rdquo; folder of my hard drive, never to be touched again.&lt;/p&gt;
+
+&lt;p&gt;The lack of direction in my research was keeping me from accomplishing anything. I was constantly
+getting ahead of myself, imagining the shiny new models I could implement and the fantastic
+results I could expect instead of nailing down a specific research agenda. A much more pragmatic
+approach would have been to follow the strategy offered by Angrist and Pischke in their opening
+chapter, &lt;strong&gt;Questions about Questions&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;The FAQs as they call them, are the four research questions econometricians
+should ask themselves before embarking on a new project:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;What is the causal relationship of interest?&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;What is the ideal experiment that would identify this causal effect?&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;What is the identification strategy?&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;What is the mode of statistical inference?&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The first question is pretty straightforward, or at least it should be - it
+is the foundation of the entire project. Nonetheless, it is important
+to explicitly identify the relationship you want to investigate. Doing so will be helpful in several ways
+as the project matures. First, it will help give you a sense
+of your data necessities. If you are interested in changes in employment outcomes
+as a result of successfully completing MOOCs, you should be considering
+the types of outcomes that are observable and their availability to the public.
+Second, knowing the type of relationship you&amp;rsquo;re trying
+to measure will inform your methodology. A relationship that is temporal in nature
+will likely call for some sort of time series model, or maybe the effect
+only manifests in extreme scenarios, in which case subsampling might be of interest.&lt;/p&gt;
+
+&lt;p&gt;Our second question is slightly more abstract than the first but still important in
+designing the overall agenda. In the event that you end up with a limitless budget and no higher authority questioning
+your ethics, what&amp;rsquo;d be the best scenario for observing the effect you are interested in?
+Your answer doesn&amp;rsquo;t have to be feasible, but it does have to be realistic. The point of this
+question is to force you to consider all possible mechanisms to be changed or held constant in order to observe
+the effect you&amp;rsquo;re after. The secondary purpose of this question is to help you reveal potential
+flaws with the overall goal of the research. Questions that cannot be answered
+by any sort of experimental design are what Angrist and Pischke call FUQ&amp;rsquo;d:
+Fundamentally Unanswered Questions.&lt;/p&gt;
+
+&lt;p&gt;Our two final questions are concerned with the specific data and methodological needs
+to carry out a study. Often it is the case in economics (and social sciences more generally)
+that experimentation is not feasible because of cost or ethical concerns. Observational data
+then becomes the stand-in for data generated by a randomized trial, so it is crucial for
+researchers to understand how to use that data in order to simulate a real experiment.
+This technique, as the authors define it, is the &lt;em&gt;identification strategy&lt;/em&gt;. The mode of statistical
+inference is closely related to a researcher&amp;rsquo;s identification strategy. It defines the population
+of interest, the type of sample that is collected, and the various modeling assumptions that
+have to be made in order to extract reasonable, well-constructed results. This will be the most
+technically demanding portion of the project and the integrity of the results will rely almost
+entirely on the correct execution of your statistics.&lt;/p&gt;
+
+&lt;p&gt;The answers to these FAQs should outline very clearly a researcher&amp;rsquo;s entire project agenda.
+Without answering these, a straightforward project can quickly derail and turn into
+a sloppy mess of misguided intentions and no clear end. In any case, this opening chapter
+of &lt;em&gt;Mostly Harmless Econometrics&lt;/em&gt; has made me reconsider how I approach the research I want
+to conduct and will hopefully make me a more pragmatic and efficacious student of economics.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Faculty Engagement in Online Discussion Forums</title>
       <link>/willsmorgan.github.io/project/2018-07-02-faculty-engagement-in-online-discussion-forums/</link>
       <pubDate>Mon, 02 Jul 2018 00:00:00 -0700</pubDate>
@@ -193,24 +287,6 @@ there is still much to explore in this domain.&lt;/p&gt;
   
   return(result)
 }&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Deep Learning</title>
-      <link>/willsmorgan.github.io/project/deep-learning/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 -0700</pubDate>
-      
-      <guid>/willsmorgan.github.io/project/deep-learning/</guid>
-      <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.&lt;/p&gt;
-
-&lt;p&gt;Nullam vel molestie justo. Curabitur vitae efficitur leo. In hac habitasse platea dictumst. Sed pulvinar mauris dui, eget varius purus congue ac. Nulla euismod, lorem vel elementum dapibus, nunc justo porta mi, sed tempus est est vel tellus. Nam et enim eleifend, laoreet sem sit amet, elementum sem. Morbi ut leo congue, maximus velit ut, finibus arcu. In et libero cursus, rutrum risus non, molestie leo. Nullam congue quam et volutpat malesuada. Sed risus tortor, pulvinar et dictum nec, sodales non mi. Phasellus lacinia commodo laoreet. Nam mollis, erat in feugiat consectetur, purus eros egestas tellus, in auctor urna odio at nibh. Mauris imperdiet nisi ac magna convallis, at rhoncus ligula cursus.&lt;/p&gt;
-
-&lt;p&gt;Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.&lt;/p&gt;
-
-&lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
-
-&lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
 </description>
     </item>
     

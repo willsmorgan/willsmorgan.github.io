@@ -22,11 +22,20 @@
     </item>
     
     <item>
-      <title>Deep-learning</title>
-      <link>/willsmorgan.github.io/tags/deep-learning/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 -0700</pubDate>
+      <title>Causal inference</title>
+      <link>/willsmorgan.github.io/tags/causal-inference/</link>
+      <pubDate>Mon, 16 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/willsmorgan.github.io/tags/deep-learning/</guid>
+      <guid>/willsmorgan.github.io/tags/causal-inference/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Econometrics</title>
+      <link>/willsmorgan.github.io/tags/econometrics/</link>
+      <pubDate>Mon, 16 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/willsmorgan.github.io/tags/econometrics/</guid>
       <description></description>
     </item>
     
@@ -54,6 +63,15 @@
       <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>/willsmorgan.github.io/tags/random-forests/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Research design</title>
+      <link>/willsmorgan.github.io/tags/research-design/</link>
+      <pubDate>Mon, 16 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/willsmorgan.github.io/tags/research-design/</guid>
       <description></description>
     </item>
     

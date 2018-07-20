@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on William Morgan</title>
-    <link>/willsmorgan.github.io/post/</link>
-    <description>Recent content in Posts on William Morgan</description>
+    <title>Discussion on William Morgan</title>
+    <link>/willsmorgan.github.io/categories/discussion/</link>
+    <description>Recent content in Discussion on William Morgan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
     <lastBuildDate>Mon, 16 Jul 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/willsmorgan.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/willsmorgan.github.io/categories/discussion/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       
       <guid>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/</guid>
       <description>Motivation This will be part of a series of posts I am writing to help bring my chops on causal inference up to par. Since I have not taken a formal course on the subject and I won&amp;rsquo;t be able to for some time, self-study is my only option. Fortunately I&amp;rsquo;ve been recommended quite a few resources from my instructors, one of which being Mostly Harmless Econometrics by Joshua D.</description>
-    </item>
-    
-    <item>
-      <title>Parallelizing Random Forests in R</title>
-      <link>/willsmorgan.github.io/post/parallelizing-random-forests-in-r/</link>
-      <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/willsmorgan.github.io/post/parallelizing-random-forests-in-r/</guid>
-      <description>Recently I’ve been working on a project with the goal of understanding how students choose between course modalities (online or in-person). My goal so far has been to test a handful of models to come up with the most accurate way of predicting the likelihood that a student will take a course online. Hopefully, this best-performing model would offer some interpretability so that I can see which variables offer the most predictive power.</description>
     </item>
     
   </channel>

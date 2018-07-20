@@ -5,6 +5,15 @@
     
     <url>
     
+      <loc>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/</loc>
+      <lastmod>2018-07-16T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/willsmorgan.github.io/project/2018-07-02-faculty-engagement-in-online-discussion-forums/</loc>
       <lastmod>2018-07-02T00:00:00-07:00</lastmod>
     </url>
@@ -32,15 +41,6 @@
     
     <url>
     
-      <loc>/willsmorgan.github.io/project/deep-learning/</loc>
-      <lastmod>2016-04-27T00:00:00-07:00</lastmod>
-    </url>
-    
-  
-    
-    
-    <url>
-    
       <loc>/willsmorgan.github.io/categories/</loc>
       <priority>0</priority>
     </url>
@@ -50,8 +50,28 @@
     
     <url>
     
-      <loc>/willsmorgan.github.io/tags/deep-learning/</loc>
-      <lastmod>2016-04-27T00:00:00-07:00</lastmod>
+      <loc>/willsmorgan.github.io/tags/causal-inference/</loc>
+      <lastmod>2018-07-16T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/willsmorgan.github.io/categories/discussion/</loc>
+      <lastmod>2018-07-16T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/willsmorgan.github.io/tags/econometrics/</loc>
+      <lastmod>2018-07-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -81,7 +101,7 @@
     <url>
     
       <loc>/willsmorgan.github.io/post/</loc>
-      <lastmod>2018-06-29T00:00:00+00:00</lastmod>
+      <lastmod>2018-07-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -121,6 +141,16 @@
     
       <loc>/willsmorgan.github.io/tags/random-forests/</loc>
       <lastmod>2018-06-29T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/willsmorgan.github.io/tags/research-design/</loc>
+      <lastmod>2018-07-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     

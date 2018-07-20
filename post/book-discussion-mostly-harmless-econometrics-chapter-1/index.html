@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.41" />
+  <meta name="author" content="Will Morgan">
+
+  
+  
+  
+  
+    
+      
+    
+  
+  <meta name="description" content="Motivation This will be part of a series of posts I am writing to help bring my chops on causal inference up to par. Since I have not taken a formal course on the subject and I won&rsquo;t be able to for some time, self-study is my only option. Fortunately I&rsquo;ve been recommended quite a few resources from my instructors, one of which being Mostly Harmless Econometrics by Joshua D.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/">
+
+  
+
+
+  
+
+  
+  
+  <meta name="theme-color" content="#EF525B">
+  
+  
+  
+  
+    
+  
+  
+    
+    
+      
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+      
+    
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+  
+  
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700%7cRoboto:400,400italic,700%7cRoboto&#43;Mono">
+  
+  <link rel="stylesheet" href="/willsmorgan.github.io/styles.css">
+  
+
+  
+
+  
+  <link rel="alternate" href="/willsmorgan.github.io/index.xml" type="application/rss+xml" title="William Morgan">
+  <link rel="feed" href="/willsmorgan.github.io/index.xml" type="application/rss+xml" title="William Morgan">
+  
+
+  <link rel="manifest" href="/willsmorgan.github.io/site.webmanifest">
+  <link rel="icon" type="image/png" href="/willsmorgan.github.io/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/willsmorgan.github.io/img/icon-192.png">
+
+  <link rel="canonical" href="/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="William Morgan">
+  <meta property="og:url" content="/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/">
+  <meta property="og:title" content="Book Discussion - Mostly Harmless Econometrics: Chapter 1 | William Morgan">
+  <meta property="og:description" content="Motivation This will be part of a series of posts I am writing to help bring my chops on causal inference up to par. Since I have not taken a formal course on the subject and I won&rsquo;t be able to for some time, self-study is my only option. Fortunately I&rsquo;ve been recommended quite a few resources from my instructors, one of which being Mostly Harmless Econometrics by Joshua D.">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2018-07-16T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2018-07-16T00:00:00&#43;00:00">
+  
+
+  
+  
+
+  <title>Book Discussion - Mostly Harmless Econometrics: Chapter 1 | William Morgan</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#toc" data-offset="71" >
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+      <a class="navbar-brand" href="/willsmorgan.github.io/">William Morgan</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+      
+
+      
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+  <div class="article-container">
+    <h1 itemprop="name">Book Discussion - Mostly Harmless Econometrics: Chapter 1</h1>
+
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    
+    <time datetime="2018-07-16 00:00:00 &#43;0000 UTC" itemprop="datePublished dateModified">
+      Jul 16, 2018
+    </time>
+  </span>
+  <span itemscope itemprop="author publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Will Morgan">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/willsmorgan.github.io/categories/discussion/">Discussion</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Book%20Discussion%20-%20Mostly%20Harmless%20Econometrics%3a%20Chapter%201&amp;url=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-1%2f"
+         target="_blank" rel="noopener">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-1%2f"
+         target="_blank" rel="noopener">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-1%2f&amp;title=Book%20Discussion%20-%20Mostly%20Harmless%20Econometrics%3a%20Chapter%201"
+         target="_blank" rel="noopener">
+        <i class="fa fa-linkedin"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-1%2f&amp;title=Book%20Discussion%20-%20Mostly%20Harmless%20Econometrics%3a%20Chapter%201"
+         target="_blank" rel="noopener">
+        <i class="fa fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Book%20Discussion%20-%20Mostly%20Harmless%20Econometrics%3a%20Chapter%201&amp;body=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-1%2f">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+<h4 id="motivation">Motivation</h4>
+
+<p>This will be part of a series of posts I am writing to help bring my chops on causal
+inference up to par. Since I have not taken a formal course on the subject and I won&rsquo;t be
+able to for some time, self-study is my only option. Fortunately I&rsquo;ve been recommended
+quite a few resources from my instructors, one of which being
+<strong>Mostly Harmless Econometrics</strong> by Joshua D. Angrist &amp; Jorn-Steffen Pischke,
+econometricians at MIT and LSE respectively.</p>
+
+<p>This and the next handful of posts will be discussions about topics covered throughout
+the book, including short summaries, descriptions of my understanding of the concepts,
+and potential applications to my own work.</p>
+
+<h4 id="chapter-1-questions-about-questions">Chapter 1: Questions about <em>Questions</em></h4>
+
+<p>At the Action Lab there is practically an immeasurable variety of data available
+to us researchers. We have student data, institutional data, clickstream data,
+and all other sorts of data that has been collected for years and years. When I was
+dumped into this massive environment as a fresh student worker I was
+hopping around from one thing to the next, searching for ways to implement everything
+I had learned in class and hoping to find great insights everywhere I went. As any
+experienced researcher would expect, this ended up wasting a lot of time. I wrote
+tons of cleaning and modeling scripts for projects that eventually were
+thrown into the &ldquo;revisit this&rdquo; folder of my hard drive, never to be touched again.</p>
+
+<p>The lack of direction in my research was keeping me from accomplishing anything. I was constantly
+getting ahead of myself, imagining the shiny new models I could implement and the fantastic
+results I could expect instead of nailing down a specific research agenda. A much more pragmatic
+approach would have been to follow the strategy offered by Angrist and Pischke in their opening
+chapter, <strong>Questions about Questions</strong>.</p>
+
+<p>The FAQs as they call them, are the four research questions econometricians
+should ask themselves before embarking on a new project:</p>
+
+<ol>
+<li><p>What is the causal relationship of interest?</p></li>
+
+<li><p>What is the ideal experiment that would identify this causal effect?</p></li>
+
+<li><p>What is the identification strategy?</p></li>
+
+<li><p>What is the mode of statistical inference?</p></li>
+</ol>
+
+<p>The first question is pretty straightforward, or at least it should be - it
+is the foundation of the entire project. Nonetheless, it is important
+to explicitly identify the relationship you want to investigate. Doing so will be helpful in several ways
+as the project matures. First, it will help give you a sense
+of your data necessities. If you are interested in changes in employment outcomes
+as a result of successfully completing MOOCs, you should be considering
+the types of outcomes that are observable and their availability to the public.
+Second, knowing the type of relationship you&rsquo;re trying
+to measure will inform your methodology. A relationship that is temporal in nature
+will likely call for some sort of time series model, or maybe the effect
+only manifests in extreme scenarios, in which case subsampling might be of interest.</p>
+
+<p>Our second question is slightly more abstract than the first but still important in
+designing the overall agenda. In the event that you end up with a limitless budget and no higher authority questioning
+your ethics, what&rsquo;d be the best scenario for observing the effect you are interested in?
+Your answer doesn&rsquo;t have to be feasible, but it does have to be realistic. The point of this
+question is to force you to consider all possible mechanisms to be changed or held constant in order to observe
+the effect you&rsquo;re after. The secondary purpose of this question is to help you reveal potential
+flaws with the overall goal of the research. Questions that cannot be answered
+by any sort of experimental design are what Angrist and Pischke call FUQ&rsquo;d:
+Fundamentally Unanswered Questions.</p>
+
+<p>Our two final questions are concerned with the specific data and methodological needs
+to carry out a study. Often it is the case in economics (and social sciences more generally)
+that experimentation is not feasible because of cost or ethical concerns. Observational data
+then becomes the stand-in for data generated by a randomized trial, so it is crucial for
+researchers to understand how to use that data in order to simulate a real experiment.
+This technique, as the authors define it, is the <em>identification strategy</em>. The mode of statistical
+inference is closely related to a researcher&rsquo;s identification strategy. It defines the population
+of interest, the type of sample that is collected, and the various modeling assumptions that
+have to be made in order to extract reasonable, well-constructed results. This will be the most
+technically demanding portion of the project and the integrity of the results will rely almost
+entirely on the correct execution of your statistics.</p>
+
+<p>The answers to these FAQs should outline very clearly a researcher&rsquo;s entire project agenda.
+Without answering these, a straightforward project can quickly derail and turn into
+a sloppy mess of misguided intentions and no clear end. In any case, this opening chapter
+of <em>Mostly Harmless Econometrics</em> has made me reconsider how I approach the research I want
+to conduct and will hopefully make me a more pragmatic and efficacious student of economics.</p>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="btn btn-primary btn-outline" href="/willsmorgan.github.io/tags/econometrics/">econometrics</a>
+  
+  <a class="btn btn-primary btn-outline" href="/willsmorgan.github.io/tags/causal-inference/">causal inference</a>
+  
+  <a class="btn btn-primary btn-outline" href="/willsmorgan.github.io/tags/research-design/">research design</a>
+  
+</div>
+
+
+
+
+    
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      &copy; 2018 &middot; 
+
+      Powered by the
+      <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+      <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close btn-large" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Cite</h4>
+      </div>
+      <div>
+        <pre><code class="modal-body tex"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-primary btn-outline js-copy-cite" href="#" target="_blank">
+          <i class="fa fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-primary btn-outline js-download-cite" href="#" target="_blank">
+          <i class="fa fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+    
+    
+    <script src="/willsmorgan.github.io/js/hugo-academic.js"></script>
+    
+
+    
+    
+      
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+      
+
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+
+  </body>
+</html>
+
