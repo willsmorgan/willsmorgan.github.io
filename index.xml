@@ -11,6 +11,255 @@
     <atom:link href="/willsmorgan.github.io/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Music Artist Recommendation with Implicit Feedback Data</title>
+      <link>/willsmorgan.github.io/project/music-artist-recommendation-with-implicit-feedback-data/</link>
+      <pubDate>Fri, 20 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/willsmorgan.github.io/project/music-artist-recommendation-with-implicit-feedback-data/</guid>
+      <description>&lt;div id=&#34;motivation&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;Recommender systems are a surprisingly large part of lives. As consumers we’re faced with endless choices for music, clothing, etc. and it can often lead to what psychologists call &lt;a href=&#34;https://en.wikipedia.org/wiki/Decision_fatigue&#34;&gt;Decision Fatigue&lt;/a&gt;. In a sentence, it is the idea that the opportunity cost of considering all items on a menu becomes so high that the quality of decision-making drops. Naturally, retailers and media providers are incentivized to limit the amount of items they show to a consumer, so the question of ranking item importance becomes highly relevant.&lt;/p&gt;
+&lt;p&gt;There are many ways to build a recommender system, but there are two general categorizations of these methods, defined mostly by the type of data that is used. First, there is &lt;em&gt;content-based&lt;/em&gt; recommendation. This type of system profiles users and items and makes recommendations based on common characteristics. Data used in this sort of design can include survey responses, demographic information, and other personal information. The item-profile data is a bit more dependent on the specific domain. Music for instance, can be profiled by the year of publication, tempo, or volume. The second categroy is called &lt;em&gt;collaborative filtering&lt;/em&gt; and will be the type of model we employ in this project. These techniques rely on data describing user-item interactions. That is, predictions are made based on users’ past song listens, purchases, or rating. A really famous example of collaborative filtering being used in real life is the model that won the a competition hosted by Netflix in 2008. The paper can be found &lt;a href=&#34;https://www.netflixprize.com/assets/GrandPrize2009_BPC_BellKor.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The data set used in the Netflix competition was unique in that it provided a lot of detail not usually found in collaborative feedback data sets. The data itself was essentially a really large matrix with individual users as rows, movies as the columns, and user ratings occupying the cells. What makes this data special is that to be included in set, users had to voluntarily rate the movies they watched. If you’re anything like me, you might realize how this could easily suffer from selection bias. I seldom have any interest in rating movies after watching them, so you could easily argue that my “type” of user would be highly underrepresented in the data. Along with this issue, another major problem with this kind of data is that it can be prohibitively expensive to collect. Instead, a much simpler and cheaper way of collecting feedback data is to observe user-item interactions. These interactions can be defined in a number of ways but it is commonly thought of a user accessing an item in a catalogue. These type of data are known as &lt;em&gt;implicit feedback&lt;/em&gt; data as opposed to the &lt;em&gt;explicit feedback&lt;/em&gt; of the Netflix challenge. Implicit feedback data is not without its problems (see my paper for a lengthier discussion), but it is an excellent starting point for a firm constructing it’s first recommender system. Because of this, many techniques using this data have been developd in recent years, most notably the&lt;br /&gt;
+&lt;a href=&#34;http://yifanhu.net/PUB/cf.pdf&#34;&gt;&lt;em&gt;Alternating Least Squares&lt;/em&gt;&lt;/a&gt; model developed by Yifan Hu.&lt;/p&gt;
+&lt;p&gt;The remainder of this project will continue as follows: I’ll spend some time describing the model itself, discuss how to evaluate it, and finally implement it on the Last.fm artist recommendation data set.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Small disclaimer&lt;/strong&gt;: this project was done in place of a final exam for a graduate machine learning course I took from Dr. Robert McCulloch at ASU. A formal paper is saved &lt;a href=&#34;https://github.com/willsmorgan/Recommender-Systems-using-W-ALS/blob/master/W-ALS%20Final.pdf&#34;&gt;here&lt;/a&gt; that I recommend reading for a much more thorough description of my work.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;model-definitions&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Model Definitions&lt;/h3&gt;
+&lt;p&gt;We first define &lt;span class=&#34;math inline&#34;&gt;\(R = (r_{ui}) \in \mathbb{R}^{m x n}\)&lt;/span&gt; to be the user-item interaction matrix, where each entry &lt;span class=&#34;math inline&#34;&gt;\(r_{ui}\)&lt;/span&gt; denotes the rating of item &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; made by user &lt;span class=&#34;math inline&#34;&gt;\(u\)&lt;/span&gt;. In this regard, we have &lt;span class=&#34;math inline&#34;&gt;\(m\)&lt;/span&gt; users rating &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; items. The general goal of the model is to decompose &lt;span class=&#34;math inline&#34;&gt;\(R\)&lt;/span&gt; into two lower-rank matrices representing latent user and item factors that abstractly define individual user and item characteristics. Formally, we aim to find a vector &lt;span class=&#34;math inline&#34;&gt;\(x_u \in \mathbb{R}^f\)&lt;/span&gt; for each user &lt;span class=&#34;math inline&#34;&gt;\(u\)&lt;/span&gt; and one for each item &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(y_i \in \mathbb{R}^f\)&lt;/span&gt;, where &lt;span class=&#34;math inline&#34;&gt;\(f\)&lt;/span&gt; is the number of latent factors we wish to estimate.&lt;/p&gt;
+&lt;p&gt;Our model assumes a standard &lt;em&gt;Loss + Penalty&lt;/em&gt; objective function. In this situation, we use squared error and and L2 penalty on the parameters &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{x}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{y}\)&lt;/span&gt;. The model is thus:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\min_{x,y} \sum_{u, i} (r_{ui} - x_{u}^{T}y_{i})^2 + \lambda ( \vert{x_u}\vert^2 + \vert{y_i}\vert^2)\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Notice that we take the cross product of &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{x}^{T}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{y}\)&lt;/span&gt; to create the estimated user-item interaction matrix. The loss is then calculated elementwise by summing the squared difference between the actual and predicted ratings.&lt;/p&gt;
+&lt;p&gt;In explicit feedback settings the ratings are directly observed so we could directly begin solving this problem. By definition implicit feedback data do not report these ratings, so Hu cleverly adjusts the observations to reflect our confidence in a user’s preference toward a particular item. To this end, we introduce two new sets of variables &lt;span class=&#34;math inline&#34;&gt;\(p_{ui}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(c_{ui}\)&lt;/span&gt; perceived preference and our confidence in that guess, respectively. &lt;span class=&#34;math inline&#34;&gt;\(p_{ui}\)&lt;/span&gt; are simply binary values for having detected any interaction with a given item. That is,&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{equation}
+  p_{ui} =
+    \begin{cases}
+      1 &amp;amp; r_{ui} &amp;gt; 0\\
+      0 &amp;amp; r_{ui} = 0
+    \end{cases}       
+\end{equation}
+\]&lt;/span&gt; We have some latitude in deciding exactly how to define &lt;span class=&#34;math inline&#34;&gt;\(c_{ui}\)&lt;/span&gt;. It is clear that &lt;span class=&#34;math inline&#34;&gt;\(c_{ui}\)&lt;/span&gt; will be a nonnegative function increasing in &lt;span class=&#34;math inline&#34;&gt;\(r_{ui}\)&lt;/span&gt;, so the majority of the decision lies in the rate at which our confidence increases. Hu suggests two recommendations:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{eqnarray}
+ c_{ui} = 1 + \alpha r_{ui},\\
+ c_{ui} = 1 + \alpha \text{log}(1 + \frac{r_{ui}}{\epsilon})
+\end{eqnarray}
+\]&lt;/span&gt; The choice is left up to the practitioner, but no matter the choice &lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\epsilon\)&lt;/span&gt; are determined by cross-validation. Once we settle on something for &lt;span class=&#34;math inline&#34;&gt;\(c_{ui}\)&lt;/span&gt;, we can formalize the objective function:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{equation}
+    \min_{x,y} \sum_{u,i} c_{ui}(p_{ui} - x_{u}^T y_i)^2 + \lambda(\sum_u \vert{x_u}\vert^2 + \sum_{i} \vert{y_i}\vert^2)
+\end{equation}
+\]&lt;/span&gt; Because we are optimizing over two variables the loss function is not convex, making this problem a whole lot more difficult to solve. To get around this, we hold one argument fixed and solve for the other iteratively. More specifically, when &lt;span class=&#34;math inline&#34;&gt;\(X\)&lt;/span&gt; is held constant the function is quadratic in &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt; and we can thus find a global minimum. The algorithm iterates back and forth betwen the two variables until a stopping criteria is met, hence the name “Alternating Least Squares”.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;evaluating-the-model&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Evaluating the Model&lt;/h3&gt;
+&lt;p&gt;Once the user and item factors have been found we can predict an individual’s preference toward any item by calculating &lt;span class=&#34;math inline&#34;&gt;\(\hat{p}_{ui} = \hat{x}^T_{u} \hat{y}_i\)&lt;/span&gt;. Recommendations are then made by selecting the top &lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt; items for which &lt;span class=&#34;math inline&#34;&gt;\(\hat{p}_{ui}\)&lt;/span&gt; is greatest.&lt;/p&gt;
+&lt;p&gt;This prediction methodology lends itself to the Mean Average Precision (MAP) and Normal Discounted Cumulative Gain (NDCG) evaluation metrics. MAP and NDCG are computed after the practitioner decides how many items to recommend (&lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt;) and so these metrics are usually referred to as &lt;a href=&#34;mailto:MAP@K&#34;&gt;MAP@K&lt;/a&gt; and &lt;a href=&#34;mailto:NDCG@K&#34;&gt;NDCG@K&lt;/a&gt;. Both metrics have values between 0 and 1, allowing us to compare performance across models with different hyperparameters.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;mailto:MAP@K&#34;&gt;MAP@K&lt;/a&gt; measures the precision of K recommendations using binary relevance - whether or not the item is relevant to the user. By classifying each item recommendation as 1 or 0 we can measure the average precision of a recommendation to a particular user by averaging the 1s divided by their ranking in the list. MAP then averages that value across all users. For example, if a user is recommended five items and the first two and last two are relevant, we have the sequence &lt;span class=&#34;math inline&#34;&gt;\(\{1, 1, 0, 1, 1\}\)&lt;/span&gt;. Relative to their ranking in this list, that sequence becomes &lt;span class=&#34;math inline&#34;&gt;\(\{\frac{1}{1}, \frac{1}{2}, 0, \frac{3}{4}, \frac{4}{5}\}\)&lt;/span&gt;, and averaging the non-zero values gives an average precision score of .7625.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;mailto:NDCG@K&#34;&gt;NDCG@K&lt;/a&gt; is slightly more complex in that it allows for real-valued item relevances and discounting for items occurring later in the list, but the general idea is the same.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;implementing-the-model&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Implementing the Model&lt;/h3&gt;
+&lt;div id=&#34;packages&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Packages&lt;/h4&gt;
+&lt;p&gt;Along with the standard data wrangling packages like &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;data.table&lt;/code&gt;, &lt;code&gt;rsparse&lt;/code&gt; from &lt;a href=&#34;https://github.com/dselivanov/rsparse&#34;&gt;Dmitriy Selivanov&lt;/a&gt; contains the algorithm used to solve the model. &lt;code&gt;Matrix&lt;/code&gt; is also used for creation and manipulation of sparse matrices.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-description&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Data Description&lt;/h4&gt;
+&lt;p&gt;This analysis will be done using the publicly available Last.fm Music Recommendation Dataset. This data contains (user, artist, plays) tuples for approximately 360,000 users and 186,000 artists collected from the Last.fm API. With this data our task will be to recommend artists to individual users, and entries in our user-item interaction matrix &lt;span class=&#34;math inline&#34;&gt;\(r_{ui}\)&lt;/span&gt; will be the number of times a user &lt;span class=&#34;math inline&#34;&gt;\(u\)&lt;/span&gt; has listened to artist &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. Although we have around 17.5 million (user, artist, plays) observations, &lt;span class=&#34;math inline&#34;&gt;\(R\)&lt;/span&gt; will still be approximately 99.97% sparse.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cleaning-and-preparation&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Cleaning and Preparation&lt;/h4&gt;
+&lt;p&gt;For the sake of interpretation and more easily keeping track of things, I chose to replace all the user and item ids with unique integer-valued ids. Initially, they come as long nonsensical character strings so this was just an easy way to standardize the naming.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Use integer-valued ids for users and items
+user_encoding &amp;lt;-  raw_data %&amp;gt;%
+  distinct(user_id) %&amp;gt;%
+  mutate(uid = row_number())
+  
+item_encoding &amp;lt;- raw_data %&amp;gt;%
+  distinct(artist_id) %&amp;gt;%
+  mutate(iid = row_number())
+
+dt &amp;lt;-  raw_data %&amp;gt;%
+  select(-artist_name) %&amp;gt;%
+  inner_join(user_encoding, by = &amp;#39;user_id&amp;#39;) %&amp;gt;%
+  inner_join(item_encoding, by = &amp;#39;artist_id&amp;#39;)
+
+rm(raw_data)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;training-and-tuning&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Training and Tuning&lt;/h4&gt;
+&lt;p&gt;Implicit feedback datasets often have some sort of time dimension separating two or more periods of observed activity. This is incredibly useful as it creates a natural testing dataset on which to evaluate models. Unfortunately, this dataset lacks this so we have to artificially create our own test set from the original. Briefly put, we select 30,000 users to be part of our test set and of the 30,000 users we randomly select 50% of their non-zero observations to use as a historical/future split. The validation strategy is as follows:&lt;/p&gt;
+
+&lt;p&gt;In R, it ends up looking like this:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Define our model matrix
+X = sparseMatrix(i = dt$uid, j = dt$iid, x = dt$number_plays, 
+                 dimnames = list(user_encoding$user_id, item_encoding$artist_name))
+
+# Sample 30K users
+n_test &amp;lt;- 30000L
+test_uid &amp;lt;- sample(nrow(user_encoding), n_test)
+
+# Split into train/test
+X_train &amp;lt;-  X[-test_uid, ]
+X_test &amp;lt;-  X[test_uid, ]
+
+rm(X)
+
+# Split our test set into &amp;quot;history&amp;quot; or &amp;quot;future&amp;quot;
+temp = as(X_test, &amp;quot;TsparseMatrix&amp;quot;)
+temp = data.table(i = temp@i, j = temp@j, x = temp@x) 
+
+# Sample 50% of each user&amp;#39;s history
+temp &amp;lt;- temp %&amp;gt;%
+  group_by(i) %&amp;gt;%
+  mutate(ct = length(j),
+         history = 
+           sample(c(TRUE, FALSE), ct, replace = TRUE, prob = c(.5, .5))) %&amp;gt;%
+  select(-ct)
+
+# Split test based on 50% sample
+X_test_history &amp;lt;- temp %&amp;gt;% filter(history == TRUE)
+X_test_future &amp;lt;- temp %&amp;gt;% filter(history == FALSE)
+
+rm(temp)
+
+# Convert them back to sparse matrices
+X_test_history &amp;lt;- sparseMatrix(i = X_test_history$i,
+                               j = X_test_history$j,
+                               x = X_test_history$x,
+                               dims = dim(X_test),
+                               dimnames = dimnames(X_test),
+                               index1 = FALSE)
+
+X_test_future &amp;lt;- sparseMatrix(i = X_test_future$i,
+                              j = X_test_future$j,
+                              x = X_test_future$x,
+                              dims = dim(X_test),
+                              dimnames = dimnames(X_test),
+                              index1 = FALSE)
+
+# Clean up
+rm(user_encoding, item_encoding, n_test, test_uid, dt)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;transform-observations-to-confidence-values&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Transform Observations to Confidence values&lt;/h4&gt;
+&lt;p&gt;Before initializing, we define the two confidence functions mentioned above. Notice that we leave the “future” observations of the test set untouched. This is done so we can actually make predictions on the set and evaluate the model. For the sake of time, we only use the linear confidence function with &lt;span class=&#34;math inline&#34;&gt;\(\alpha = 0.1\)&lt;/span&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Define confidence functions and create matrices
+log_conf &amp;lt;-  function(x, alpha, epsilon){
+  x_confidence &amp;lt;-  x
+  stopifnot(inherits(x, &amp;quot;sparseMatrix&amp;quot;))
+  x_confidence@x = 1 + alpha * log(1 + (x@x / epsilon))
+  return(x_confidence)
+}
+
+lin_conf &amp;lt;- function(x, alpha) {
+  x_confidence &amp;lt;- x
+  stopifnot(inherits(x, &amp;quot;sparseMatrix&amp;quot;))
+  x_confidence@x = 1 + alpha * x@x
+  return(x_confidence)
+}
+
+alpha &amp;lt;- .1
+X_train_conf &amp;lt;- lin_conf(X_train, alpha)
+X_test_history_conf &amp;lt;- lin_conf(X_test_history, alpha)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;initialize&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Initialize&lt;/h4&gt;
+&lt;p&gt;This part is relatively simple - we simply invoke &lt;code&gt;rsparse::WRMF$new&lt;/code&gt; and select the rank of the latent factor matrices we want to estimate, and then select the metrics for scoring. In this example, we use &lt;a href=&#34;mailto:MAP@10&#34;&gt;MAP@10&lt;/a&gt; and &lt;a href=&#34;mailto:NDCG@10&#34;&gt;NDCG@10&lt;/a&gt;. Again, in the interest of time we only choose 10 but this can easily be turned into a loop to evaluate models with varying numbers of factors.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Initialize a model
+model &amp;lt;- WRMF$new(rank = 10L)
+
+# Add scoring metrics
+model$add_scorers(x_train = X_test_history_conf, x_cv = X_test_future,
+                  list(&amp;quot;map10&amp;quot; = &amp;quot;map@10&amp;quot;, &amp;quot;ndcg-10&amp;quot; = &amp;quot;ndcg@10&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;train-the-model&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Train the Model&lt;/h4&gt;
+&lt;p&gt;Now that everything is set up, we can execute the &lt;code&gt;fit_transform&lt;/code&gt; method and calculate the latent factors. In &lt;code&gt;rsparse&lt;/code&gt;, these are called the &lt;em&gt;user_embeddings&lt;/em&gt; and the &lt;em&gt;item_embeddings&lt;/em&gt;. Once the factors are estimated, we can predict a new user’s user-feature vector by simply iterating one more time (using our previous solution for &lt;span class=&#34;math inline&#34;&gt;\(X\)&lt;/span&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# User embeddings
+user_embeddings &amp;lt;- model$fit_transform(X_train_conf)
+
+# Item embeddings 
+item_embeddings &amp;lt;-  model$components
+
+# Make a prediction for a new user
+new_user_embeddings &amp;lt;- model$transform(X_test_history_conf)
+new_user_1 &amp;lt;-  X_test_history_conf[1:1, , drop = FALSE]
+
+new_user_predictions &amp;lt;- model$predict(new_user_1, k = 10)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;tune-the-model&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Tune the Model&lt;/h4&gt;
+&lt;p&gt;In most other scenarios, we’d want to specify a grid of possible hyperparameters to find the best-performing ones for our model. This isn’t a huge concern for this toy example, but here is a glance at the CV scheme I used for my paper:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Convergence parameters
+n_iter_max = 10L
+convergence_tol = .01
+
+# Hyperparameters to test
+grid = expand.grid(alpha = c(.01, .1, 1),
+                   rank = c(8, 16, 32, 40),
+                   lambda = c(.01, .1, 1, 10))
+
+# Empty vector to throw results into
+scores &amp;lt;-  vector(&amp;quot;list&amp;quot;, nrow(grid))
+
+# Begin tuning
+for (k in seq_len(nrow(grid))){
+  # Define parameters
+  alpha = grid$alpha[[k]]
+  rank = grid$rank[[k]]
+  lambda = grid$lambda[[k]]
+  
+  # Initialize
+  model &amp;lt;- WRMF$new(rank = rank)
+  
+  # Conf. matrices
+  X_train_conf&amp;lt;- lin_conf(X_train, alpha)
+  X_test_history_conf &amp;lt;- lin_conf(X_test_history, alpha)
+  
+  # Scoring metrics
+  model$add_scorers(x_train = X_test_history_conf,
+                    x_cv = X_test_future,
+                    list(&amp;quot;map10&amp;quot; = &amp;quot;map@10&amp;quot;, &amp;quot;ndcg-10&amp;quot; = &amp;quot;ndcg@10&amp;quot;))
+  
+  # Fit
+  fit &amp;lt;-  model$fit_transform(X_train_conf, n_iter = n_iter_max,
+                              convergence_tol = convergence_tol)
+
+  # Extract score
+  score &amp;lt;-  attr(fit, &amp;quot;trace&amp;quot;)
+  
+  score$alpha = alpha
+  score$lambda = lambda
+  score$rank = rank
+  
+  # Add to list
+  scores[[k]] &amp;lt;-  score
+  
+  # Clean up
+  rm(alpha, rank, lambda, model, score)
+}
+
+cv_results &amp;lt;-  bind_rows(scores) %&amp;gt;%
+  group_by(alpha, lambda, rank, scorer) %&amp;gt;%
+  arrange(iter) %&amp;gt;%
+  filter(row_number() == n()) %&amp;gt;%
+  select(-iter) %&amp;gt;%
+  ungroup()&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;further-readings-and-references&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Further readings and references&lt;/h3&gt;
+&lt;p&gt;This was work was inspired by a lot of various blog posts and really interesting papers I found while learning about recommendation systems. In particular, &lt;a href=&#34;http://dsnotes.com/post/2017-06-28-matrix-factorization-for-recommender-systems-part-2/&#34;&gt;Dmitriy Selivanov’s&lt;/a&gt; post on implicit matrix factorization helped me with a large chunk of the code used to run the model. Ben Frederickson has two amazing posts &lt;a href=&#34;http://www.benfrederickson.com/matrix-factorization/&#34;&gt;here&lt;/a&gt; and &lt;a href=&#34;http://www.benfrederickson.com/fast-implicit-matrix-factorization/&#34;&gt;here&lt;/a&gt; detailing his implementation of ALS in python, and Will Kirwin from Activision Games describes &lt;a href=&#34;http://activisiongamescience.github.io/2016/01/11/Implicit-Recommender-Systems-Biased-Matrix-Factorization/&#34;&gt;here&lt;/a&gt; ways to account for user and item biases.&lt;/p&gt;
+&lt;p&gt;There are many other sources that have helped me with accomplish this project and for a complete list of citations please reference my paper &lt;a href=&#34;https://github.com/willsmorgan/Recommender-Systems-using-W-ALS/blob/master/W-ALS%20Final.pdf&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Book Discussion - Mostly Harmless Econometrics: Chapter 1</title>
       <link>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/</link>
       <pubDate>Mon, 16 Jul 2018 00:00:00 +0000</pubDate>

@@ -5,6 +5,15 @@
     
     <url>
     
+      <loc>/willsmorgan.github.io/project/music-artist-recommendation-with-implicit-feedback-data/</loc>
+      <lastmod>2018-07-20T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/</loc>
       <lastmod>2018-07-16T00:00:00+00:00</lastmod>
     </url>
@@ -80,6 +89,16 @@
     
     <url>
     
+      <loc>/willsmorgan.github.io/tags/matrix-factorization/</loc>
+      <lastmod>2018-07-20T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/willsmorgan.github.io/tags/online-learning/</loc>
       <lastmod>2018-07-02T00:00:00-07:00</lastmod>
       <priority>0</priority>
@@ -111,7 +130,7 @@
     <url>
     
       <loc>/willsmorgan.github.io/project/</loc>
-      <lastmod>2018-07-02T00:00:00-07:00</lastmod>
+      <lastmod>2018-07-20T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -121,6 +140,16 @@
     <url>
     
       <loc>/willsmorgan.github.io/publication_types/</loc>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/willsmorgan.github.io/tags/r/</loc>
+      <lastmod>2018-07-20T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -141,6 +170,16 @@
     
       <loc>/willsmorgan.github.io/tags/random-forests/</loc>
       <lastmod>2018-06-29T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/willsmorgan.github.io/categories/recommender-systems/</loc>
+      <lastmod>2018-07-20T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     

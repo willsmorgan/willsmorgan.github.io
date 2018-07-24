@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Projects on William Morgan</title>
-    <link>/willsmorgan.github.io/project/</link>
-    <description>Recent content in Projects on William Morgan</description>
+    <title>R on William Morgan</title>
+    <link>/willsmorgan.github.io/tags/r/</link>
+    <description>Recent content in R on William Morgan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
     <lastBuildDate>Fri, 20 Jul 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/willsmorgan.github.io/project/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/willsmorgan.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,16 +19,6 @@
       
       <guid>/willsmorgan.github.io/project/music-artist-recommendation-with-implicit-feedback-data/</guid>
       <description>MotivationRecommender systems are a surprisingly large part of lives. As consumers we’re faced with endless choices for music, clothing, etc. and it can often lead to what psychologists call Decision Fatigue. In a sentence, it is the idea that the opportunity cost of considering all items on a menu becomes so high that the quality of decision-making drops. Naturally, retailers and media providers are incentivized to limit the amount of items they show to a consumer, so the question of ranking item importance becomes highly relevant.</description>
-    </item>
-    
-    <item>
-      <title>Faculty Engagement in Online Discussion Forums</title>
-      <link>/willsmorgan.github.io/project/2018-07-02-faculty-engagement-in-online-discussion-forums/</link>
-      <pubDate>Mon, 02 Jul 2018 00:00:00 -0700</pubDate>
-      
-      <guid>/willsmorgan.github.io/project/2018-07-02-faculty-engagement-in-online-discussion-forums/</guid>
-      <description>Forums are a common component of online courses. Generally, they are used a medium for students and instructors to interact with one another for discussion, inquiry, etc.
-Instructors generally use these forums to make announcements regarding due dates, answer student questions and comment on student discussion. This project explored how faculty engagement in these specific environments affected various student outcomes. Specifically, we investigate its relationship with student forum activity and student grades.</description>
     </item>
     
   </channel>

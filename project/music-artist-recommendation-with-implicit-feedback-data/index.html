@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.41" />
+  <meta name="author" content="Will Morgan">
+
+  
+  
+  
+  
+    
+      
+    
+  
+  <meta name="description" content="MotivationRecommender systems are a surprisingly large part of lives. As consumers we’re faced with endless choices for music, clothing, etc. and it can often lead to what psychologists call Decision Fatigue. In a sentence, it is the idea that the opportunity cost of considering all items on a menu becomes so high that the quality of decision-making drops. Naturally, retailers and media providers are incentivized to limit the amount of items they show to a consumer, so the question of ranking item importance becomes highly relevant.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/willsmorgan.github.io/project/music-artist-recommendation-with-implicit-feedback-data/">
+
+  
+
+
+  
+
+  
+  
+  <meta name="theme-color" content="#EF525B">
+  
+  
+  
+  
+    
+  
+  
+    
+    
+      
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+      
+    
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+  
+  
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700%7cRoboto:400,400italic,700%7cRoboto&#43;Mono">
+  
+  <link rel="stylesheet" href="/willsmorgan.github.io/styles.css">
+  
+
+  
+
+  
+  <link rel="alternate" href="/willsmorgan.github.io/index.xml" type="application/rss+xml" title="William Morgan">
+  <link rel="feed" href="/willsmorgan.github.io/index.xml" type="application/rss+xml" title="William Morgan">
+  
+
+  <link rel="manifest" href="/willsmorgan.github.io/site.webmanifest">
+  <link rel="icon" type="image/png" href="/willsmorgan.github.io/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/willsmorgan.github.io/img/icon-192.png">
+
+  <link rel="canonical" href="/willsmorgan.github.io/project/music-artist-recommendation-with-implicit-feedback-data/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="William Morgan">
+  <meta property="og:url" content="/willsmorgan.github.io/project/music-artist-recommendation-with-implicit-feedback-data/">
+  <meta property="og:title" content="Music Artist Recommendation with Implicit Feedback Data | William Morgan">
+  <meta property="og:description" content="MotivationRecommender systems are a surprisingly large part of lives. As consumers we’re faced with endless choices for music, clothing, etc. and it can often lead to what psychologists call Decision Fatigue. In a sentence, it is the idea that the opportunity cost of considering all items on a menu becomes so high that the quality of decision-making drops. Naturally, retailers and media providers are incentivized to limit the amount of items they show to a consumer, so the question of ranking item importance becomes highly relevant.">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2018-07-20T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2018-07-20T00:00:00&#43;00:00">
+  
+
+  
+  
+
+  <title>Music Artist Recommendation with Implicit Feedback Data | William Morgan</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#toc" data-offset="71" >
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+      <a class="navbar-brand" href="/willsmorgan.github.io/">William Morgan</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+      
+
+      
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article article-project" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+  <div class="article-container">
+
+    <div class="pub-title">
+      <h1 itemprop="name">Music Artist Recommendation with Implicit Feedback Data</h1>
+      <span class="pub-authors" itemprop="author">&nbsp;</span>
+      <span class="pull-right">
+        
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Music%20Artist%20Recommendation%20with%20Implicit%20Feedback%20Data&amp;url=%2fwillsmorgan.github.io%2fproject%2fmusic-artist-recommendation-with-implicit-feedback-data%2f"
+         target="_blank" rel="noopener">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fwillsmorgan.github.io%2fproject%2fmusic-artist-recommendation-with-implicit-feedback-data%2f"
+         target="_blank" rel="noopener">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fwillsmorgan.github.io%2fproject%2fmusic-artist-recommendation-with-implicit-feedback-data%2f&amp;title=Music%20Artist%20Recommendation%20with%20Implicit%20Feedback%20Data"
+         target="_blank" rel="noopener">
+        <i class="fa fa-linkedin"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fwillsmorgan.github.io%2fproject%2fmusic-artist-recommendation-with-implicit-feedback-data%2f&amp;title=Music%20Artist%20Recommendation%20with%20Implicit%20Feedback%20Data"
+         target="_blank" rel="noopener">
+        <i class="fa fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Music%20Artist%20Recommendation%20with%20Implicit%20Feedback%20Data&amp;body=%2fwillsmorgan.github.io%2fproject%2fmusic-artist-recommendation-with-implicit-feedback-data%2f">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </span>
+    </div>
+
+    
+
+    <div class="article-style" itemprop="articleBody">
+      <div id="motivation" class="section level3">
+<h3>Motivation</h3>
+<p>Recommender systems are a surprisingly large part of lives. As consumers we’re faced with endless choices for music, clothing, etc. and it can often lead to what psychologists call <a href="https://en.wikipedia.org/wiki/Decision_fatigue">Decision Fatigue</a>. In a sentence, it is the idea that the opportunity cost of considering all items on a menu becomes so high that the quality of decision-making drops. Naturally, retailers and media providers are incentivized to limit the amount of items they show to a consumer, so the question of ranking item importance becomes highly relevant.</p>
+<p>There are many ways to build a recommender system, but there are two general categorizations of these methods, defined mostly by the type of data that is used. First, there is <em>content-based</em> recommendation. This type of system profiles users and items and makes recommendations based on common characteristics. Data used in this sort of design can include survey responses, demographic information, and other personal information. The item-profile data is a bit more dependent on the specific domain. Music for instance, can be profiled by the year of publication, tempo, or volume. The second categroy is called <em>collaborative filtering</em> and will be the type of model we employ in this project. These techniques rely on data describing user-item interactions. That is, predictions are made based on users’ past song listens, purchases, or rating. A really famous example of collaborative filtering being used in real life is the model that won the a competition hosted by Netflix in 2008. The paper can be found <a href="https://www.netflixprize.com/assets/GrandPrize2009_BPC_BellKor.pdf">here</a>.</p>
+<p>The data set used in the Netflix competition was unique in that it provided a lot of detail not usually found in collaborative feedback data sets. The data itself was essentially a really large matrix with individual users as rows, movies as the columns, and user ratings occupying the cells. What makes this data special is that to be included in set, users had to voluntarily rate the movies they watched. If you’re anything like me, you might realize how this could easily suffer from selection bias. I seldom have any interest in rating movies after watching them, so you could easily argue that my “type” of user would be highly underrepresented in the data. Along with this issue, another major problem with this kind of data is that it can be prohibitively expensive to collect. Instead, a much simpler and cheaper way of collecting feedback data is to observe user-item interactions. These interactions can be defined in a number of ways but it is commonly thought of a user accessing an item in a catalogue. These type of data are known as <em>implicit feedback</em> data as opposed to the <em>explicit feedback</em> of the Netflix challenge. Implicit feedback data is not without its problems (see my paper for a lengthier discussion), but it is an excellent starting point for a firm constructing it’s first recommender system. Because of this, many techniques using this data have been developd in recent years, most notably the<br />
+<a href="http://yifanhu.net/PUB/cf.pdf"><em>Alternating Least Squares</em></a> model developed by Yifan Hu.</p>
+<p>The remainder of this project will continue as follows: I’ll spend some time describing the model itself, discuss how to evaluate it, and finally implement it on the Last.fm artist recommendation data set.</p>
+<p><strong>Small disclaimer</strong>: this project was done in place of a final exam for a graduate machine learning course I took from Dr. Robert McCulloch at ASU. A formal paper is saved <a href="https://github.com/willsmorgan/Recommender-Systems-using-W-ALS/blob/master/W-ALS%20Final.pdf">here</a> that I recommend reading for a much more thorough description of my work.</p>
+</div>
+<div id="model-definitions" class="section level3">
+<h3>Model Definitions</h3>
+<p>We first define <span class="math inline">\(R = (r_{ui}) \in \mathbb{R}^{m x n}\)</span> to be the user-item interaction matrix, where each entry <span class="math inline">\(r_{ui}\)</span> denotes the rating of item <span class="math inline">\(i\)</span> made by user <span class="math inline">\(u\)</span>. In this regard, we have <span class="math inline">\(m\)</span> users rating <span class="math inline">\(n\)</span> items. The general goal of the model is to decompose <span class="math inline">\(R\)</span> into two lower-rank matrices representing latent user and item factors that abstractly define individual user and item characteristics. Formally, we aim to find a vector <span class="math inline">\(x_u \in \mathbb{R}^f\)</span> for each user <span class="math inline">\(u\)</span> and one for each item <span class="math inline">\(i\)</span>, <span class="math inline">\(y_i \in \mathbb{R}^f\)</span>, where <span class="math inline">\(f\)</span> is the number of latent factors we wish to estimate.</p>
+<p>Our model assumes a standard <em>Loss + Penalty</em> objective function. In this situation, we use squared error and and L2 penalty on the parameters <span class="math inline">\(\mathbb{x}\)</span> and <span class="math inline">\(\mathbb{y}\)</span>. The model is thus:</p>
+<p><span class="math display">\[\min_{x,y} \sum_{u, i} (r_{ui} - x_{u}^{T}y_{i})^2 + \lambda ( \vert{x_u}\vert^2 + \vert{y_i}\vert^2)\]</span></p>
+<p>Notice that we take the cross product of <span class="math inline">\(\mathbb{x}^{T}\)</span> and <span class="math inline">\(\mathbb{y}\)</span> to create the estimated user-item interaction matrix. The loss is then calculated elementwise by summing the squared difference between the actual and predicted ratings.</p>
+<p>In explicit feedback settings the ratings are directly observed so we could directly begin solving this problem. By definition implicit feedback data do not report these ratings, so Hu cleverly adjusts the observations to reflect our confidence in a user’s preference toward a particular item. To this end, we introduce two new sets of variables <span class="math inline">\(p_{ui}\)</span> and <span class="math inline">\(c_{ui}\)</span> perceived preference and our confidence in that guess, respectively. <span class="math inline">\(p_{ui}\)</span> are simply binary values for having detected any interaction with a given item. That is,</p>
+<p><span class="math display">\[
+\begin{equation}
+  p_{ui} =
+    \begin{cases}
+      1 &amp; r_{ui} &gt; 0\\
+      0 &amp; r_{ui} = 0
+    \end{cases}       
+\end{equation}
+\]</span> We have some latitude in deciding exactly how to define <span class="math inline">\(c_{ui}\)</span>. It is clear that <span class="math inline">\(c_{ui}\)</span> will be a nonnegative function increasing in <span class="math inline">\(r_{ui}\)</span>, so the majority of the decision lies in the rate at which our confidence increases. Hu suggests two recommendations:</p>
+<p><span class="math display">\[
+\begin{eqnarray}
+ c_{ui} = 1 + \alpha r_{ui},\\
+ c_{ui} = 1 + \alpha \text{log}(1 + \frac{r_{ui}}{\epsilon})
+\end{eqnarray}
+\]</span> The choice is left up to the practitioner, but no matter the choice <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\epsilon\)</span> are determined by cross-validation. Once we settle on something for <span class="math inline">\(c_{ui}\)</span>, we can formalize the objective function:</p>
+<p><span class="math display">\[
+\begin{equation}
+    \min_{x,y} \sum_{u,i} c_{ui}(p_{ui} - x_{u}^T y_i)^2 + \lambda(\sum_u \vert{x_u}\vert^2 + \sum_{i} \vert{y_i}\vert^2)
+\end{equation}
+\]</span> Because we are optimizing over two variables the loss function is not convex, making this problem a whole lot more difficult to solve. To get around this, we hold one argument fixed and solve for the other iteratively. More specifically, when <span class="math inline">\(X\)</span> is held constant the function is quadratic in <span class="math inline">\(Y\)</span> and we can thus find a global minimum. The algorithm iterates back and forth betwen the two variables until a stopping criteria is met, hence the name “Alternating Least Squares”.</p>
+</div>
+<div id="evaluating-the-model" class="section level3">
+<h3>Evaluating the Model</h3>
+<p>Once the user and item factors have been found we can predict an individual’s preference toward any item by calculating <span class="math inline">\(\hat{p}_{ui} = \hat{x}^T_{u} \hat{y}_i\)</span>. Recommendations are then made by selecting the top <span class="math inline">\(K\)</span> items for which <span class="math inline">\(\hat{p}_{ui}\)</span> is greatest.</p>
+<p>This prediction methodology lends itself to the Mean Average Precision (MAP) and Normal Discounted Cumulative Gain (NDCG) evaluation metrics. MAP and NDCG are computed after the practitioner decides how many items to recommend (<span class="math inline">\(K\)</span>) and so these metrics are usually referred to as <a href="mailto:MAP@K">MAP@K</a> and <a href="mailto:NDCG@K">NDCG@K</a>. Both metrics have values between 0 and 1, allowing us to compare performance across models with different hyperparameters.</p>
+<p><a href="mailto:MAP@K">MAP@K</a> measures the precision of K recommendations using binary relevance - whether or not the item is relevant to the user. By classifying each item recommendation as 1 or 0 we can measure the average precision of a recommendation to a particular user by averaging the 1s divided by their ranking in the list. MAP then averages that value across all users. For example, if a user is recommended five items and the first two and last two are relevant, we have the sequence <span class="math inline">\(\{1, 1, 0, 1, 1\}\)</span>. Relative to their ranking in this list, that sequence becomes <span class="math inline">\(\{\frac{1}{1}, \frac{1}{2}, 0, \frac{3}{4}, \frac{4}{5}\}\)</span>, and averaging the non-zero values gives an average precision score of .7625.</p>
+<p><a href="mailto:NDCG@K">NDCG@K</a> is slightly more complex in that it allows for real-valued item relevances and discounting for items occurring later in the list, but the general idea is the same.</p>
+</div>
+<div id="implementing-the-model" class="section level3">
+<h3>Implementing the Model</h3>
+<div id="packages" class="section level4">
+<h4>Packages</h4>
+<p>Along with the standard data wrangling packages like <code>dplyr</code> and <code>data.table</code>, <code>rsparse</code> from <a href="https://github.com/dselivanov/rsparse">Dmitriy Selivanov</a> contains the algorithm used to solve the model. <code>Matrix</code> is also used for creation and manipulation of sparse matrices.</p>
+</div>
+<div id="data-description" class="section level4">
+<h4>Data Description</h4>
+<p>This analysis will be done using the publicly available Last.fm Music Recommendation Dataset. This data contains (user, artist, plays) tuples for approximately 360,000 users and 186,000 artists collected from the Last.fm API. With this data our task will be to recommend artists to individual users, and entries in our user-item interaction matrix <span class="math inline">\(r_{ui}\)</span> will be the number of times a user <span class="math inline">\(u\)</span> has listened to artist <span class="math inline">\(i\)</span>. Although we have around 17.5 million (user, artist, plays) observations, <span class="math inline">\(R\)</span> will still be approximately 99.97% sparse.</p>
+</div>
+<div id="cleaning-and-preparation" class="section level4">
+<h4>Cleaning and Preparation</h4>
+<p>For the sake of interpretation and more easily keeping track of things, I chose to replace all the user and item ids with unique integer-valued ids. Initially, they come as long nonsensical character strings so this was just an easy way to standardize the naming.</p>
+<pre class="r"><code># Use integer-valued ids for users and items
+user_encoding &lt;-  raw_data %&gt;%
+  distinct(user_id) %&gt;%
+  mutate(uid = row_number())
+  
+item_encoding &lt;- raw_data %&gt;%
+  distinct(artist_id) %&gt;%
+  mutate(iid = row_number())
+
+dt &lt;-  raw_data %&gt;%
+  select(-artist_name) %&gt;%
+  inner_join(user_encoding, by = &#39;user_id&#39;) %&gt;%
+  inner_join(item_encoding, by = &#39;artist_id&#39;)
+
+rm(raw_data)</code></pre>
+</div>
+<div id="training-and-tuning" class="section level4">
+<h4>Training and Tuning</h4>
+<p>Implicit feedback datasets often have some sort of time dimension separating two or more periods of observed activity. This is incredibly useful as it creates a natural testing dataset on which to evaluate models. Unfortunately, this dataset lacks this so we have to artificially create our own test set from the original. Briefly put, we select 30,000 users to be part of our test set and of the 30,000 users we randomly select 50% of their non-zero observations to use as a historical/future split. The validation strategy is as follows:</p>
+
+<p>In R, it ends up looking like this:</p>
+<pre class="r"><code># Define our model matrix
+X = sparseMatrix(i = dt$uid, j = dt$iid, x = dt$number_plays, 
+                 dimnames = list(user_encoding$user_id, item_encoding$artist_name))
+
+# Sample 30K users
+n_test &lt;- 30000L
+test_uid &lt;- sample(nrow(user_encoding), n_test)
+
+# Split into train/test
+X_train &lt;-  X[-test_uid, ]
+X_test &lt;-  X[test_uid, ]
+
+rm(X)
+
+# Split our test set into &quot;history&quot; or &quot;future&quot;
+temp = as(X_test, &quot;TsparseMatrix&quot;)
+temp = data.table(i = temp@i, j = temp@j, x = temp@x) 
+
+# Sample 50% of each user&#39;s history
+temp &lt;- temp %&gt;%
+  group_by(i) %&gt;%
+  mutate(ct = length(j),
+         history = 
+           sample(c(TRUE, FALSE), ct, replace = TRUE, prob = c(.5, .5))) %&gt;%
+  select(-ct)
+
+# Split test based on 50% sample
+X_test_history &lt;- temp %&gt;% filter(history == TRUE)
+X_test_future &lt;- temp %&gt;% filter(history == FALSE)
+
+rm(temp)
+
+# Convert them back to sparse matrices
+X_test_history &lt;- sparseMatrix(i = X_test_history$i,
+                               j = X_test_history$j,
+                               x = X_test_history$x,
+                               dims = dim(X_test),
+                               dimnames = dimnames(X_test),
+                               index1 = FALSE)
+
+X_test_future &lt;- sparseMatrix(i = X_test_future$i,
+                              j = X_test_future$j,
+                              x = X_test_future$x,
+                              dims = dim(X_test),
+                              dimnames = dimnames(X_test),
+                              index1 = FALSE)
+
+# Clean up
+rm(user_encoding, item_encoding, n_test, test_uid, dt)</code></pre>
+</div>
+<div id="transform-observations-to-confidence-values" class="section level4">
+<h4>Transform Observations to Confidence values</h4>
+<p>Before initializing, we define the two confidence functions mentioned above. Notice that we leave the “future” observations of the test set untouched. This is done so we can actually make predictions on the set and evaluate the model. For the sake of time, we only use the linear confidence function with <span class="math inline">\(\alpha = 0.1\)</span>.</p>
+<pre class="r"><code># Define confidence functions and create matrices
+log_conf &lt;-  function(x, alpha, epsilon){
+  x_confidence &lt;-  x
+  stopifnot(inherits(x, &quot;sparseMatrix&quot;))
+  x_confidence@x = 1 + alpha * log(1 + (x@x / epsilon))
+  return(x_confidence)
+}
+
+lin_conf &lt;- function(x, alpha) {
+  x_confidence &lt;- x
+  stopifnot(inherits(x, &quot;sparseMatrix&quot;))
+  x_confidence@x = 1 + alpha * x@x
+  return(x_confidence)
+}
+
+alpha &lt;- .1
+X_train_conf &lt;- lin_conf(X_train, alpha)
+X_test_history_conf &lt;- lin_conf(X_test_history, alpha)</code></pre>
+</div>
+<div id="initialize" class="section level4">
+<h4>Initialize</h4>
+<p>This part is relatively simple - we simply invoke <code>rsparse::WRMF$new</code> and select the rank of the latent factor matrices we want to estimate, and then select the metrics for scoring. In this example, we use <a href="mailto:MAP@10">MAP@10</a> and <a href="mailto:NDCG@10">NDCG@10</a>. Again, in the interest of time we only choose 10 but this can easily be turned into a loop to evaluate models with varying numbers of factors.</p>
+<pre class="r"><code># Initialize a model
+model &lt;- WRMF$new(rank = 10L)
+
+# Add scoring metrics
+model$add_scorers(x_train = X_test_history_conf, x_cv = X_test_future,
+                  list(&quot;map10&quot; = &quot;map@10&quot;, &quot;ndcg-10&quot; = &quot;ndcg@10&quot;))</code></pre>
+</div>
+<div id="train-the-model" class="section level4">
+<h4>Train the Model</h4>
+<p>Now that everything is set up, we can execute the <code>fit_transform</code> method and calculate the latent factors. In <code>rsparse</code>, these are called the <em>user_embeddings</em> and the <em>item_embeddings</em>. Once the factors are estimated, we can predict a new user’s user-feature vector by simply iterating one more time (using our previous solution for <span class="math inline">\(X\)</span>).</p>
+<pre class="r"><code># User embeddings
+user_embeddings &lt;- model$fit_transform(X_train_conf)
+
+# Item embeddings 
+item_embeddings &lt;-  model$components
+
+# Make a prediction for a new user
+new_user_embeddings &lt;- model$transform(X_test_history_conf)
+new_user_1 &lt;-  X_test_history_conf[1:1, , drop = FALSE]
+
+new_user_predictions &lt;- model$predict(new_user_1, k = 10)</code></pre>
+</div>
+<div id="tune-the-model" class="section level4">
+<h4>Tune the Model</h4>
+<p>In most other scenarios, we’d want to specify a grid of possible hyperparameters to find the best-performing ones for our model. This isn’t a huge concern for this toy example, but here is a glance at the CV scheme I used for my paper:</p>
+<pre class="r"><code># Convergence parameters
+n_iter_max = 10L
+convergence_tol = .01
+
+# Hyperparameters to test
+grid = expand.grid(alpha = c(.01, .1, 1),
+                   rank = c(8, 16, 32, 40),
+                   lambda = c(.01, .1, 1, 10))
+
+# Empty vector to throw results into
+scores &lt;-  vector(&quot;list&quot;, nrow(grid))
+
+# Begin tuning
+for (k in seq_len(nrow(grid))){
+  # Define parameters
+  alpha = grid$alpha[[k]]
+  rank = grid$rank[[k]]
+  lambda = grid$lambda[[k]]
+  
+  # Initialize
+  model &lt;- WRMF$new(rank = rank)
+  
+  # Conf. matrices
+  X_train_conf&lt;- lin_conf(X_train, alpha)
+  X_test_history_conf &lt;- lin_conf(X_test_history, alpha)
+  
+  # Scoring metrics
+  model$add_scorers(x_train = X_test_history_conf,
+                    x_cv = X_test_future,
+                    list(&quot;map10&quot; = &quot;map@10&quot;, &quot;ndcg-10&quot; = &quot;ndcg@10&quot;))
+  
+  # Fit
+  fit &lt;-  model$fit_transform(X_train_conf, n_iter = n_iter_max,
+                              convergence_tol = convergence_tol)
+
+  # Extract score
+  score &lt;-  attr(fit, &quot;trace&quot;)
+  
+  score$alpha = alpha
+  score$lambda = lambda
+  score$rank = rank
+  
+  # Add to list
+  scores[[k]] &lt;-  score
+  
+  # Clean up
+  rm(alpha, rank, lambda, model, score)
+}
+
+cv_results &lt;-  bind_rows(scores) %&gt;%
+  group_by(alpha, lambda, rank, scorer) %&gt;%
+  arrange(iter) %&gt;%
+  filter(row_number() == n()) %&gt;%
+  select(-iter) %&gt;%
+  ungroup()</code></pre>
+</div>
+</div>
+<div id="further-readings-and-references" class="section level3">
+<h3>Further readings and references</h3>
+<p>This was work was inspired by a lot of various blog posts and really interesting papers I found while learning about recommendation systems. In particular, <a href="http://dsnotes.com/post/2017-06-28-matrix-factorization-for-recommender-systems-part-2/">Dmitriy Selivanov’s</a> post on implicit matrix factorization helped me with a large chunk of the code used to run the model. Ben Frederickson has two amazing posts <a href="http://www.benfrederickson.com/matrix-factorization/">here</a> and <a href="http://www.benfrederickson.com/fast-implicit-matrix-factorization/">here</a> detailing his implementation of ALS in python, and Will Kirwin from Activision Games describes <a href="http://activisiongamescience.github.io/2016/01/11/Implicit-Recommender-Systems-Biased-Matrix-Factorization/">here</a> ways to account for user and item biases.</p>
+<p>There are many other sources that have helped me with accomplish this project and for a complete list of citations please reference my paper <a href="https://github.com/willsmorgan/Recommender-Systems-using-W-ALS/blob/master/W-ALS%20Final.pdf">here</a></p>
+</div>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="btn btn-primary btn-outline" href="/willsmorgan.github.io/tags/r/">R</a>
+  
+  <a class="btn btn-primary btn-outline" href="/willsmorgan.github.io/tags/matrix-factorization/">matrix factorization</a>
+  
+</div>
+
+
+
+
+    
+    
+    
+
+    
+      
+      
+      
+      
+
+      
+      
+      
+      
+    
+
+  </div>
+</article>
+
+
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      &copy; 2018 &middot; 
+
+      Powered by the
+      <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+      <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close btn-large" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Cite</h4>
+      </div>
+      <div>
+        <pre><code class="modal-body tex"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-primary btn-outline js-copy-cite" href="#" target="_blank">
+          <i class="fa fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-primary btn-outline js-download-cite" href="#" target="_blank">
+          <i class="fa fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+    
+    
+    <script src="/willsmorgan.github.io/js/hugo-academic.js"></script>
+    
+
+    
+    
+      
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+      
+
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" integrity="sha512-tOav5w1OjvsSJzePRtt2uQPFwBoHt1VZcUq8l8nm5284LEKE9FSJBQryzMBzHxY5P0zRdNqEcpLIRVYFNgu1jw==" crossorigin="anonymous"></script>
+    
+    
+
+  </body>
+</html>
+
