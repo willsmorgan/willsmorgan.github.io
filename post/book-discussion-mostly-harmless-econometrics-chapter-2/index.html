@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.41" />
+  <meta name="author" content="Will Morgan">
+
+  
+  
+  
+  
+    
+      
+    
+  
+  <meta name="description" content="Chapter 2: The Experimental IdealAngrist and Pischke begin building the foundation for concepts fundamental to causal inference in the second chapter of Mostly Harmless Econometrics. It opens with an anecdote about a 1962 experiment conducted to assess the effects of an early-intervention in preschoolers, highlighting the project’s excellent randomized design. The study itself was used as evidence for the creation of the Head Start preschool program but for us it matters because it reflects the value of random assignment in research design.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-2/">
+
+  
+
+
+  
+
+  
+  
+  <meta name="theme-color" content="#EF525B">
+  
+  
+  
+  
+    
+  
+  
+    
+    
+      
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+      
+    
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+  
+  
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700%7cRoboto:400,400italic,700%7cRoboto&#43;Mono">
+  
+  <link rel="stylesheet" href="/willsmorgan.github.io/styles.css">
+  
+
+  
+
+  
+  <link rel="alternate" href="/willsmorgan.github.io/index.xml" type="application/rss+xml" title="William Morgan">
+  <link rel="feed" href="/willsmorgan.github.io/index.xml" type="application/rss+xml" title="William Morgan">
+  
+
+  <link rel="manifest" href="/willsmorgan.github.io/site.webmanifest">
+  <link rel="icon" type="image/png" href="/willsmorgan.github.io/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/willsmorgan.github.io/img/icon-192.png">
+
+  <link rel="canonical" href="/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-2/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="William Morgan">
+  <meta property="og:url" content="/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-2/">
+  <meta property="og:title" content="Book Discussion - Mostly Harmless Econometrics: Chapter 2 | William Morgan">
+  <meta property="og:description" content="Chapter 2: The Experimental IdealAngrist and Pischke begin building the foundation for concepts fundamental to causal inference in the second chapter of Mostly Harmless Econometrics. It opens with an anecdote about a 1962 experiment conducted to assess the effects of an early-intervention in preschoolers, highlighting the project’s excellent randomized design. The study itself was used as evidence for the creation of the Head Start preschool program but for us it matters because it reflects the value of random assignment in research design.">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2018-07-27T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2018-07-27T00:00:00&#43;00:00">
+  
+
+  
+  
+
+  <title>Book Discussion - Mostly Harmless Econometrics: Chapter 2 | William Morgan</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#toc" data-offset="71" >
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+      <a class="navbar-brand" href="/willsmorgan.github.io/">William Morgan</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/willsmorgan.github.io/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+      
+
+      
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+  <div class="article-container">
+    <h1 itemprop="name">Book Discussion - Mostly Harmless Econometrics: Chapter 2</h1>
+
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    
+    <time datetime="2018-07-27 00:00:00 &#43;0000 UTC" itemprop="datePublished dateModified">
+      Jul 27, 2018
+    </time>
+  </span>
+  <span itemscope itemprop="author publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Will Morgan">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    8 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="/willsmorgan.github.io/categories/discussion/">Discussion</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Book%20Discussion%20-%20Mostly%20Harmless%20Econometrics%3a%20Chapter%202&amp;url=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-2%2f"
+         target="_blank" rel="noopener">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-2%2f"
+         target="_blank" rel="noopener">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-2%2f&amp;title=Book%20Discussion%20-%20Mostly%20Harmless%20Econometrics%3a%20Chapter%202"
+         target="_blank" rel="noopener">
+        <i class="fa fa-linkedin"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-2%2f&amp;title=Book%20Discussion%20-%20Mostly%20Harmless%20Econometrics%3a%20Chapter%202"
+         target="_blank" rel="noopener">
+        <i class="fa fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Book%20Discussion%20-%20Mostly%20Harmless%20Econometrics%3a%20Chapter%202&amp;body=%2fwillsmorgan.github.io%2fpost%2fbook-discussion-mostly-harmless-econometrics-chapter-2%2f">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+
+    <div class="article-style" itemprop="articleBody">
+      <div id="chapter-2-the-experimental-ideal" class="section level4">
+<h4>Chapter 2: The Experimental Ideal</h4>
+<p>Angrist and Pischke begin building the foundation for concepts fundamental to causal inference in the second chapter of <em>Mostly Harmless Econometrics</em>. It opens with an anecdote about a 1962 experiment conducted to assess the effects of an early-intervention in preschoolers, highlighting the project’s excellent randomized design. The study itself was used as evidence for the creation of the Head Start preschool program but for us it matters because it reflects the value of random assignment in research design. Without it, teasing out causal effects becomes a bit more involved. Namely, selection bias starts to creep in and distort our perception of the effect. There are other problems associated with non-random treatment assignment, but this is the largest barrier for proper inference.</p>
+<p>The rest of this chapter proceeds by describing first the nature of selection bias in the potential outcomes framework, then the random assignment solution to selection bias, and finally an introduction to analysis in a regression setting.</p>
+</div>
+<div id="what-is-selection-bias" class="section level4">
+<h4>2.1: What is Selection Bias?</h4>
+<p>Before defining selection bias formally we’ll begin with an example. Suppose I am interested in potential differences in student performance between online and in-person modalities for a given course. In other words, does a student perform better in the same course if they take it online (as opposed to in-person)? Here, the treatment is course modality and the outcome I’m interested in is the student’s grade. A naive approach would be to simply test for a difference in the mean grade received in each modality, so let’s begin there:</p>
+<pre class="r"><code>t.test(dt[dt$modality == &quot;Online&quot;, &quot;cgrade&quot;],
+       dt[dt$modality == &quot;In-person&quot;, &quot;cgrade&quot;])</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  dt[dt$modality == &quot;Online&quot;, &quot;cgrade&quot;] and dt[dt$modality == &quot;In-person&quot;, &quot;cgrade&quot;]
+## t = -36.788, df = 13877, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.5008225 -0.4501533
+## sample estimates:
+## mean of x mean of y 
+##  2.771123  3.246611</code></pre>
+<p>There appears to be a significant difference between the two groups of ~0.5 grade points, which translates to about half a letter grade. It’s tempting to conclude that the online modality is less efficacious for students, but can we say that this difference is explained entirely by modality? It could certainly be the case that the proportion of students that are employed is much higher in the online population, decreasing the amount of available time they have for coursework. This could explain some of the variation in grades between the two groups that is not caused by the choice of modality.</p>
+<p>This hidden variation exactly captures the idea behind selection bias. The treatment assignment of having taking the course online is not distributed randomly among the entire population of students. The bias is introduced when certain subsets of the population (older, employed) are more likely to receive the treatment. In our example, the “estimate” of the causal effect is biased downwards for the reasons described previously.</p>
+<p>Now that we have a general understanding of the problem we can formalize the idea. However, before we get to the definition we’ll have to introduce the idea of <em>potential outcomes</em>.</p>
+<div id="potential-outcomes" class="section level5">
+<h5>Potential Outcomes</h5>
+<p>Let’s continue with the above example - the online modality treatment. We can describe the treatment as a binary variable <span class="math inline">\(D_i = \{0,1\}\)</span> and our outcome, grade points, as <span class="math inline">\(Y_i\)</span>. The basic question we’re interested in is whether <span class="math inline">\(Y_i\)</span> differs depending on the presence or absence of <span class="math inline">\(D_i\)</span>. For a given individual there will be two possible outcomes - the outcome had the student taken the course in-person or if they had taken it online. More specifically, we write:</p>
+<p><span class="math display">\[
+\begin{equation}
+  Y_i =
+    \begin{cases}
+      Y_{1i} &amp; D_i = 1\\
+      Y_{0i} &amp; D_i = 0
+    \end{cases}       
+\end{equation}
+\]</span></p>
+<p>In this setup, the difference between <span class="math inline">\(Y_{1i}\)</span> and <span class="math inline">\(Y_{0i}\)</span> represents the causal effect of the treatment. This seems pretty obvious, but we’ve already run into one of the fundamental issues with causal inference: we never observe both potential outcomes. Instead, all can we can do is approximate the effect by looking at population outcomes. In particular, we hope to find the observed average difference in health</p>
+<p><span class="math display">\[
+E[Y_i|D_i = 1] - E[Y_i|D_i = 0]
+\]</span></p>
+<p>This can be conveniently rewritten in terms of our potential outcomes:</p>
+<p><span class="math display">\[
+= (E[Y_{1i}|D_i = 1] - E[Y_{0i}|D_i = 1]) + (E[Y_{0i}|D_i = 1] - E[Y_{0i}|D_i = 0])
+\]</span></p>
+<p>The term in the first set of parentheses is referred to as the <em>average treatment effect on the treated</em>. In this case it represents what the average change in grades would be if the online students had taken their course in person. Likewise, the expression in the second set of parentheses represents the <em>selection bias</em>. It describes the difference in average <span class="math inline">\(Y_{0i}\)</span> between those who did and did not take a course online.</p>
+</div>
+</div>
+<div id="solving-the-selection-problem" class="section level4">
+<h4>2.2 Solving the selection problem</h4>
+<p>Angrist and Pischke put it very succinctly - “random assignment of <span class="math inline">\(D_i\)</span> solves the selection problem because random assignment makes <span class="math inline">\(D_i\)</span> independent of the potential outcomes” (p. 12). Notice that the selection bias term in the previous equation drops off when we substitute <span class="math inline">\(E[Y_{0i}|D_i = 0]\)</span> for <span class="math inline">\(E[Y_{0i}|D_i = 1]\)</span> (this is allowed because of the independence). We can take this simplification one step further and write our working equation as such:</p>
+<p><span class="math display">\[
+E[Y_{1i}|D_i = 1] - E[Y_{0i}|D_i = 1] = E[Y_{1i} - Y_{0i}|D_i = 1]
+\]</span></p>
+<p><span class="math display">\[
+= E[Y_{1i} - Y_{0i}]
+\]</span> This effectively means that the average treatment effect on the treated is equivalent to the average difference in potential outcomes of a randomly chosen subject. This is a easy simplification to read, but the more important outcome of random assignment is the elimination of the selection bias.</p>
+<p>One thing to note about random assignment is that the likelihood of treatment is not necessarily uniform over the entire population. In order to make a true apples-to-apples comparison, the likelihood of treatment needs to be uniform <em>conditional on subject characteristics</em>. That is, subjects with similar characteristics like age, gender, academic ability, etc. must be equally likely to receive treatment. Another way to state this is that distributions of subject characteristics across treatment groups should be as similar as possible. It is common to verify this in a preliminary analysis to make sure the assumption of random selection holds water.</p>
+<p>Getting back to our earlier example, let’s check out the conditional distributions of some of the demographics of our data - we should expect to see roughly the same conditional means if the assumption of random assignment is correct.</p>
+<pre><code>## # A tibble: 2 x 5
+##   modality  age_at_class_start cgrade  male underrep
+##   &lt;chr&gt;                  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+## 1 In-person               19.3   3.25 0.510    0.659
+## 2 Online                  28.4   2.77 0.426    0.706</code></pre>
+<p>Based on this table it is clear that the treatment in this data set is unlikely to be randomly assigned. The significant differences in age and other variables might be attributing to the observed differences in grade, so the initial comparison we made is almost certainly inappropriate.</p>
+</div>
+<div id="regression" class="section level4">
+<h4>2.3: Regression</h4>
+<p>Recall our original definition for the potential outcomes of observation <span class="math inline">\(i\)</span>:</p>
+<p><span class="math display">\[
+\begin{equation}
+  Y_i =
+    \begin{cases}
+      Y_{1i} &amp; D_i = 1\\
+      Y_{0i} &amp; D_i = 0
+    \end{cases}       
+\end{equation}
+\]</span></p>
+<p>Note that we can rewrite this statement in a slightly more compact way:</p>
+<p><span class="math display">\[
+Y_i = Y_{0i} + (Y_{1i} - Y_{0i})D_i
+\]</span> Now, suppose the causal effect is fixed for the entire population. That is, assume <span class="math inline">\(Y_{1i} - Y_{0i} = \beta\)</span>, some constant. (Sidebar - I switch up the notation found in the actual text to keep it somewhat in line with regression notation I am familiar with). With this assumption, we can now rewrite the above equation as such:</p>
+<p><span class="math display">\[
+= \alpha + \beta{D_i} + \epsilon_i,
+\]</span> where <span class="math inline">\(\epsilon_i = Y_{0i} - E[Y_{0i}]\)</span>, the random part of <span class="math inline">\(Y_{0i}\)</span>. Evaluating this with both treatment statuses gives us:</p>
+<p><span class="math display">\[
+\begin{eqnarray}
+ E[Y_i|D_i = 1] = \alpha + \beta + E[\epsilon_i|D_i = 1],\\
+ E[Y_i|D_i = 0] = \alpha + E[\epsilon_i|D_i = 0]
+\end{eqnarray}
+\]</span></p>
+<p>The difference between these two equations reveals:</p>
+<p><span class="math display">\[
+E[Y_i|D_i = 1] - E[Y_i|D_i = 0] = \beta + (E[\epsilon_i|D_i = 1] - E[\epsilon_i|D_i = 0])
+\]</span></p>
+<p><span class="math inline">\(\beta\)</span> in this regard can be seen as the treatment effect and the rest of the statement is the selection bias. More specifically, we can summarize the selection bias as the correlation between the error term <span class="math inline">\(\epsilon_i\)</span> and the binary variable for treatment, <span class="math inline">\(D_i\)</span>.</p>
+<p>If you have any experience with regression, you should know that it is seldom the case that the treatment dummy is used alone. Generally you’d include various fixed effects for demographics, location, etc. to help account for variation in <span class="math inline">\(Y_i\)</span>. If these effects (or controls) are totally uncorrelated with the treatment assignment, then our estimate for <span class="math inline">\(\beta\)</span> will be unaffected whether they are included or not. We include these controls in order to achieve more accurate estimates of effect size. When we are able to reduce the residual variance with extra controls, the standard errors of the estimates go down, giving us tighter confidence intervals and more specific estimates of the true effect.</p>
+</div>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="btn btn-primary btn-outline" href="/willsmorgan.github.io/tags/econometrics/">econometrics</a>
+  
+  <a class="btn btn-primary btn-outline" href="/willsmorgan.github.io/tags/causal-inference/">causal inference</a>
+  
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-1/">Book Discussion - Mostly Harmless Econometrics: Chapter 1</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      &copy; 2018 &middot; 
+
+      Powered by the
+      <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+      <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close btn-large" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Cite</h4>
+      </div>
+      <div>
+        <pre><code class="modal-body tex"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-primary btn-outline js-copy-cite" href="#" target="_blank">
+          <i class="fa fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-primary btn-outline js-download-cite" href="#" target="_blank">
+          <i class="fa fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+    
+    
+    <script src="/willsmorgan.github.io/js/hugo-academic.js"></script>
+    
+
+    
+    
+      
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+      
+
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" integrity="sha512-tOav5w1OjvsSJzePRtt2uQPFwBoHt1VZcUq8l8nm5284LEKE9FSJBQryzMBzHxY5P0zRdNqEcpLIRVYFNgu1jw==" crossorigin="anonymous"></script>
+    
+    
+
+  </body>
+</html>
+

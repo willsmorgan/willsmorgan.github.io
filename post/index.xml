@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
-    <lastBuildDate>Mon, 16 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/willsmorgan.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Book Discussion - Mostly Harmless Econometrics: Chapter 2</title>
+      <link>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-2/</link>
+      <pubDate>Fri, 27 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-2/</guid>
+      <description>Chapter 2: The Experimental IdealAngrist and Pischke begin building the foundation for concepts fundamental to causal inference in the second chapter of Mostly Harmless Econometrics. It opens with an anecdote about a 1962 experiment conducted to assess the effects of an early-intervention in preschoolers, highlighting the project’s excellent randomized design. The study itself was used as evidence for the creation of the Head Start preschool program but for us it matters because it reflects the value of random assignment in research design.</description>
+    </item>
     
     <item>
       <title>Book Discussion - Mostly Harmless Econometrics: Chapter 1</title>

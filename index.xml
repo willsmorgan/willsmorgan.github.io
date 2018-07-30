@@ -11,6 +11,112 @@
     <atom:link href="/willsmorgan.github.io/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Book Discussion - Mostly Harmless Econometrics: Chapter 2</title>
+      <link>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-2/</link>
+      <pubDate>Fri, 27 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-2/</guid>
+      <description>&lt;div id=&#34;chapter-2-the-experimental-ideal&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Chapter 2: The Experimental Ideal&lt;/h4&gt;
+&lt;p&gt;Angrist and Pischke begin building the foundation for concepts fundamental to causal inference in the second chapter of &lt;em&gt;Mostly Harmless Econometrics&lt;/em&gt;. It opens with an anecdote about a 1962 experiment conducted to assess the effects of an early-intervention in preschoolers, highlighting the project’s excellent randomized design. The study itself was used as evidence for the creation of the Head Start preschool program but for us it matters because it reflects the value of random assignment in research design. Without it, teasing out causal effects becomes a bit more involved. Namely, selection bias starts to creep in and distort our perception of the effect. There are other problems associated with non-random treatment assignment, but this is the largest barrier for proper inference.&lt;/p&gt;
+&lt;p&gt;The rest of this chapter proceeds by describing first the nature of selection bias in the potential outcomes framework, then the random assignment solution to selection bias, and finally an introduction to analysis in a regression setting.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-is-selection-bias&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;2.1: What is Selection Bias?&lt;/h4&gt;
+&lt;p&gt;Before defining selection bias formally we’ll begin with an example. Suppose I am interested in potential differences in student performance between online and in-person modalities for a given course. In other words, does a student perform better in the same course if they take it online (as opposed to in-person)? Here, the treatment is course modality and the outcome I’m interested in is the student’s grade. A naive approach would be to simply test for a difference in the mean grade received in each modality, so let’s begin there:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;t.test(dt[dt$modality == &amp;quot;Online&amp;quot;, &amp;quot;cgrade&amp;quot;],
+       dt[dt$modality == &amp;quot;In-person&amp;quot;, &amp;quot;cgrade&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+##  Welch Two Sample t-test
+## 
+## data:  dt[dt$modality == &amp;quot;Online&amp;quot;, &amp;quot;cgrade&amp;quot;] and dt[dt$modality == &amp;quot;In-person&amp;quot;, &amp;quot;cgrade&amp;quot;]
+## t = -36.788, df = 13877, p-value &amp;lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.5008225 -0.4501533
+## sample estimates:
+## mean of x mean of y 
+##  2.771123  3.246611&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There appears to be a significant difference between the two groups of ~0.5 grade points, which translates to about half a letter grade. It’s tempting to conclude that the online modality is less efficacious for students, but can we say that this difference is explained entirely by modality? It could certainly be the case that the proportion of students that are employed is much higher in the online population, decreasing the amount of available time they have for coursework. This could explain some of the variation in grades between the two groups that is not caused by the choice of modality.&lt;/p&gt;
+&lt;p&gt;This hidden variation exactly captures the idea behind selection bias. The treatment assignment of having taking the course online is not distributed randomly among the entire population of students. The bias is introduced when certain subsets of the population (older, employed) are more likely to receive the treatment. In our example, the “estimate” of the causal effect is biased downwards for the reasons described previously.&lt;/p&gt;
+&lt;p&gt;Now that we have a general understanding of the problem we can formalize the idea. However, before we get to the definition we’ll have to introduce the idea of &lt;em&gt;potential outcomes&lt;/em&gt;.&lt;/p&gt;
+&lt;div id=&#34;potential-outcomes&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;Potential Outcomes&lt;/h5&gt;
+&lt;p&gt;Let’s continue with the above example - the online modality treatment. We can describe the treatment as a binary variable &lt;span class=&#34;math inline&#34;&gt;\(D_i = \{0,1\}\)&lt;/span&gt; and our outcome, grade points, as &lt;span class=&#34;math inline&#34;&gt;\(Y_i\)&lt;/span&gt;. The basic question we’re interested in is whether &lt;span class=&#34;math inline&#34;&gt;\(Y_i\)&lt;/span&gt; differs depending on the presence or absence of &lt;span class=&#34;math inline&#34;&gt;\(D_i\)&lt;/span&gt;. For a given individual there will be two possible outcomes - the outcome had the student taken the course in-person or if they had taken it online. More specifically, we write:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{equation}
+  Y_i =
+    \begin{cases}
+      Y_{1i} &amp;amp; D_i = 1\\
+      Y_{0i} &amp;amp; D_i = 0
+    \end{cases}       
+\end{equation}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In this setup, the difference between &lt;span class=&#34;math inline&#34;&gt;\(Y_{1i}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(Y_{0i}\)&lt;/span&gt; represents the causal effect of the treatment. This seems pretty obvious, but we’ve already run into one of the fundamental issues with causal inference: we never observe both potential outcomes. Instead, all can we can do is approximate the effect by looking at population outcomes. In particular, we hope to find the observed average difference in health&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+E[Y_i|D_i = 1] - E[Y_i|D_i = 0]
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This can be conveniently rewritten in terms of our potential outcomes:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+= (E[Y_{1i}|D_i = 1] - E[Y_{0i}|D_i = 1]) + (E[Y_{0i}|D_i = 1] - E[Y_{0i}|D_i = 0])
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The term in the first set of parentheses is referred to as the &lt;em&gt;average treatment effect on the treated&lt;/em&gt;. In this case it represents what the average change in grades would be if the online students had taken their course in person. Likewise, the expression in the second set of parentheses represents the &lt;em&gt;selection bias&lt;/em&gt;. It describes the difference in average &lt;span class=&#34;math inline&#34;&gt;\(Y_{0i}\)&lt;/span&gt; between those who did and did not take a course online.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;solving-the-selection-problem&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;2.2 Solving the selection problem&lt;/h4&gt;
+&lt;p&gt;Angrist and Pischke put it very succinctly - “random assignment of &lt;span class=&#34;math inline&#34;&gt;\(D_i\)&lt;/span&gt; solves the selection problem because random assignment makes &lt;span class=&#34;math inline&#34;&gt;\(D_i\)&lt;/span&gt; independent of the potential outcomes” (p. 12). Notice that the selection bias term in the previous equation drops off when we substitute &lt;span class=&#34;math inline&#34;&gt;\(E[Y_{0i}|D_i = 0]\)&lt;/span&gt; for &lt;span class=&#34;math inline&#34;&gt;\(E[Y_{0i}|D_i = 1]\)&lt;/span&gt; (this is allowed because of the independence). We can take this simplification one step further and write our working equation as such:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+E[Y_{1i}|D_i = 1] - E[Y_{0i}|D_i = 1] = E[Y_{1i} - Y_{0i}|D_i = 1]
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+= E[Y_{1i} - Y_{0i}]
+\]&lt;/span&gt; This effectively means that the average treatment effect on the treated is equivalent to the average difference in potential outcomes of a randomly chosen subject. This is a easy simplification to read, but the more important outcome of random assignment is the elimination of the selection bias.&lt;/p&gt;
+&lt;p&gt;One thing to note about random assignment is that the likelihood of treatment is not necessarily uniform over the entire population. In order to make a true apples-to-apples comparison, the likelihood of treatment needs to be uniform &lt;em&gt;conditional on subject characteristics&lt;/em&gt;. That is, subjects with similar characteristics like age, gender, academic ability, etc. must be equally likely to receive treatment. Another way to state this is that distributions of subject characteristics across treatment groups should be as similar as possible. It is common to verify this in a preliminary analysis to make sure the assumption of random selection holds water.&lt;/p&gt;
+&lt;p&gt;Getting back to our earlier example, let’s check out the conditional distributions of some of the demographics of our data - we should expect to see roughly the same conditional means if the assumption of random assignment is correct.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 2 x 5
+##   modality  age_at_class_start cgrade  male underrep
+##   &amp;lt;chr&amp;gt;                  &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+## 1 In-person               19.3   3.25 0.510    0.659
+## 2 Online                  28.4   2.77 0.426    0.706&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Based on this table it is clear that the treatment in this data set is unlikely to be randomly assigned. The significant differences in age and other variables might be attributing to the observed differences in grade, so the initial comparison we made is almost certainly inappropriate.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;regression&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;2.3: Regression&lt;/h4&gt;
+&lt;p&gt;Recall our original definition for the potential outcomes of observation &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{equation}
+  Y_i =
+    \begin{cases}
+      Y_{1i} &amp;amp; D_i = 1\\
+      Y_{0i} &amp;amp; D_i = 0
+    \end{cases}       
+\end{equation}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Note that we can rewrite this statement in a slightly more compact way:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+Y_i = Y_{0i} + (Y_{1i} - Y_{0i})D_i
+\]&lt;/span&gt; Now, suppose the causal effect is fixed for the entire population. That is, assume &lt;span class=&#34;math inline&#34;&gt;\(Y_{1i} - Y_{0i} = \beta\)&lt;/span&gt;, some constant. (Sidebar - I switch up the notation found in the actual text to keep it somewhat in line with regression notation I am familiar with). With this assumption, we can now rewrite the above equation as such:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+= \alpha + \beta{D_i} + \epsilon_i,
+\]&lt;/span&gt; where &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_i = Y_{0i} - E[Y_{0i}]\)&lt;/span&gt;, the random part of &lt;span class=&#34;math inline&#34;&gt;\(Y_{0i}\)&lt;/span&gt;. Evaluating this with both treatment statuses gives us:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{eqnarray}
+ E[Y_i|D_i = 1] = \alpha + \beta + E[\epsilon_i|D_i = 1],\\
+ E[Y_i|D_i = 0] = \alpha + E[\epsilon_i|D_i = 0]
+\end{eqnarray}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The difference between these two equations reveals:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+E[Y_i|D_i = 1] - E[Y_i|D_i = 0] = \beta + (E[\epsilon_i|D_i = 1] - E[\epsilon_i|D_i = 0])
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\beta\)&lt;/span&gt; in this regard can be seen as the treatment effect and the rest of the statement is the selection bias. More specifically, we can summarize the selection bias as the correlation between the error term &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_i\)&lt;/span&gt; and the binary variable for treatment, &lt;span class=&#34;math inline&#34;&gt;\(D_i\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;If you have any experience with regression, you should know that it is seldom the case that the treatment dummy is used alone. Generally you’d include various fixed effects for demographics, location, etc. to help account for variation in &lt;span class=&#34;math inline&#34;&gt;\(Y_i\)&lt;/span&gt;. If these effects (or controls) are totally uncorrelated with the treatment assignment, then our estimate for &lt;span class=&#34;math inline&#34;&gt;\(\beta\)&lt;/span&gt; will be unaffected whether they are included or not. We include these controls in order to achieve more accurate estimates of effect size. When we are able to reduce the residual variance with extra controls, the standard errors of the estimates go down, giving us tighter confidence intervals and more specific estimates of the true effect.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Music Artist Recommendation with Implicit Feedback Data</title>
       <link>/willsmorgan.github.io/project/music-artist-recommendation-with-implicit-feedback-data/</link>
       <pubDate>Fri, 20 Jul 2018 00:00:00 +0000</pubDate>
