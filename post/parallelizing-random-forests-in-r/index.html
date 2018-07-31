@@ -227,7 +227,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    4 min read
+    5 min read
   </span>
   
 
@@ -315,67 +315,135 @@
 </ul>
 <p>There is only a little more than 50 lines of code in the example, but there is a good amount to dissect. First, it should be noted that the size of the tree must be specified a priori - the main goal is to get an estimate of the out-of-sample error for a particular forest size (i.e. a specific hyperparameter value). The function starts by iterating through each of the K folds of your data. For a given fold, the tree-growing is done in ten separate groups and then combined. In other words, for a random forest with 100 trees, we grow ten forests of ten trees and combine them using <code>randomForest::combine</code> (this decision about ten groups is completely arbitrary, I just assumed that any forest size I was going to test would be divisible by ten). This function is absolutely critical and is the key reason we can use <code>%dopar%</code> here. Once the random forest is put back together, we estimate the out-of-sample error and move on to the next fold. Finally, the results are averaged across all K folds and the function spits out a data frame detailing the number of trees that were grown and the misclassification rate.</p>
 <p>This function isn’t perfect, but it certainly does the trick. It’d be nice to include some other forms of error on top of the misclassification rate and allow for many forest sizes to be tested. For now, I’ll keep this in my back pocket and robustify it in the future.</p>
-<pre class="r"><code>cvRF &lt;- function(X, Y, ntrees, folds, parallel = TRUE) {
+<p>UPDATE (7.31.18):</p>
+<p>I was running this on around ~600K observations for 15 different tree sizes and for some reason I was ending up a lot of “zombie” processes. I have no clue what was happening, but I’ve updated the function to be more programmatically sound to hopefully get rid of the problem.</p>
+<p>There is now a specific function (<code>parGrow</code>) for parallel growth that will force the cluster to close. In addition, I’ve updated the functionality so that you can feed in a vector of tree sizes to test instead of just a single tree size. Finally, I’ve added the option for test set prediction so that everything can be run all within the single function.</p>
+<pre class="r"><code>cvRF &lt;- function(X_train, Y_train, folds, tree_sizes, X_test = NULL, Y_test = NULL, ncores = 10) {
   &#39;
   Use foreach to parallelize RF tree growth for a specified number of trees and
   estimate OOB error using cross-validation
   
   Args:
-  - X --&gt; matrix of predictors
-  - Y --&gt; vector/factor of responses
-  - ntrees --&gt; numeric value for size of forest
-  - folds ---&gt; vector of integers with length equal to number of rows in X/Y
-  - parallel ---&gt; boolean for using parallel 
-
+  - X_train --&gt; matrix of training predictors
+  - Y_train --&gt; vector/factor of training outcomes
+  - ntrees --&gt; number of trees to grow in forest
+  - folds --&gt; user-supplied vector of folds
+  - X_test, Y_test ---&gt; test set used for prediction
+  
   Returns:
   - df with two columns:
   - num_trees
-  - misclassification rate
+  - cv misclassification rate
+  - test misclassiciation rate (if test set supplied)
   &#39;
-  
-  # Initiate cluster
-  if (parallel) {
-    cl &lt;- makeCluster(detectCores() - 2)
-    registerDoParallel(cl)
-  }
-  
-  cat(&quot;Testing RF of size:&quot;, ntrees, &quot;\n&quot;)
-  
-  # Begin CV
-  result &lt;- foreach(j = 1:max(folds), .combine = bind_rows) %do% {
+  # Define function to parallelize forest growth
+  parGrow &lt;- function(X, Y, tree_size) {
     
-    cat(&quot;Fold&quot;, j, &quot;of&quot;, max(folds), &quot;\n&quot;)
-    
-    # Grow trees in parallel and combine into one
-    rf &lt;- foreach(ntree = rep(ntrees/10, 10), .combine = combine, .packages = &#39;randomForest&#39;) %dopar% {
-      
-      # Grow indvl tree on the k-1 folds
-      randomForest(
-        x = X[folds != j, ],
-        y = Y[folds != j],
-        ntree = ntree,
-        mtry = sqrt(dim(X)[2])
-      )
+    # Search parent environment for ncores and initalize cluster
+    if (ncores &gt; 1) {
+      cl &lt;- makeCluster(ncores)
+      registerDoParallel(cl)
+      on.exit(stopCluster(cl))
     }
     
-    # Predict on out-of-sample fold
-    pred &lt;- predict(rf, X[folds == j, ], type = &#39;response&#39;)
+    # Grow trees in parallel and combine into one
+    rf &lt;- foreach(ntree = rep(tree_size/10, 10),
+                  .combine = randomForest::combine,
+                  .multicombine = TRUE,
+                  .inorder = FALSE,
+                  .packages = &#39;randomForest&#39;) %dopar% {
+                    
+                    # Grow indvl tree on the k-1 folds
+                    randomForest(
+                      x = X,
+                      y = Y,
+                      ntree = ntree,
+                      mtry = sqrt(dim(X)[2])
+                    )
+                  }
+    
+    # Return an RF object
+    rf
+  }
+  
+  # Define function to evaluate specific fold
+  evalFold &lt;- function(fold) {
+    
+    # Train forest
+    forest &lt;- parGrow(X = X_train[folds != fold, ],
+                      Y = Y_train[folds != fold],
+                      tree_size = tree_size)
+    
+    # Evaluate on OOS fold
+    preds &lt;- predict(forest,
+                     X_train[folds == fold, ],
+                     type = &#39;response&#39;)
     
     # Return df of results
     data.frame(
-      num_trees = ntrees,
-      misclassification = 1 - mean(pred == Y[folds == j]),
-      fold = j
+      tree_size = tree_size,
+      cv_misclass = 1 - mean(preds == Y_train[folds == fold]),
+      fold = fold
     )
+    
   }
   
-  # Stop cluster
-  if (parallel) {on.exit(stopCluster(cl))}
+  # Define function to run through all folds  
+  runCV &lt;- function() {
+    
+    # Train and evaluate each fold
+    cv_result &lt;- foreach(fold = 1:max(folds),
+                         .combine = bind_rows,
+                         .multicombine = TRUE,
+                         .inorder = FALSE) %do% {
+                           
+                           # Print status
+                           cat(&quot;Fold&quot;, fold, &quot;of&quot;, max(folds), &quot;\n&quot;)
+                           
+                           # Run evaluation tool
+                           evalFold(fold)
+                         }
+    
+    # Summarise across folds
+    cv_result %&lt;&gt;%
+      group_by(tree_size) %&gt;%
+      summarise_at(vars(cv_misclass), mean)
+    
+    # Return cv_results
+    cv_result
+  }
   
-  # Average error rate across folds
-  result %&lt;&gt;% group_by(num_trees) %&gt;% summarise_at(vars(misclassification), mean)
-  
-  return(result)
+  # Run through vector of tree sizes
+  result &lt;- foreach(i = seq_along(tree_sizes),
+                    .combine = bind_rows,
+                    .multicombine = TRUE,
+                    .inorder = FALSE) %do% {
+                      
+                      cat(&quot;Testing RF of size:&quot;, tree_sizes[i], &quot;\n&quot;)
+                      
+                      # Establish tree size to test
+                      tree_size &lt;- tree_sizes[i]
+                      
+                      # Run CV for current tree size
+                      cv_result &lt;- runCV()
+                      
+                      # Find test error if supplied
+                      if (!is.null(X_test) &amp; !is.null(Y_test)) {
+                        
+                        # Grow on full training set
+                        rf &lt;- parGrow(X_train, Y_train, tree_size)
+                        
+                        # Predict
+                        test_pred &lt;- predict(rf, X_test, type = &#39;response&#39;)
+                        test_misclass &lt;- 1 - mean(test_pred == Y_test)
+                        
+                        # Attach result to existing df of results
+                        cv_result$test_misclass &lt;- test_misclass
+                      }
+                      
+                      # Print result for row binding
+                      cv_result
+                    }
 }</code></pre>
 
     </div>
