@@ -5,6 +5,15 @@
     
     <url>
     
+      <loc>/willsmorgan.github.io/post/solving-collinearity-with-penalized-regression/</loc>
+      <lastmod>2018-09-03T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-2/</loc>
       <lastmod>2018-07-27T00:00:00+00:00</lastmod>
     </url>
@@ -70,7 +79,7 @@
     <url>
     
       <loc>/willsmorgan.github.io/categories/discussion/</loc>
-      <lastmod>2018-07-27T00:00:00+00:00</lastmod>
+      <lastmod>2018-09-03T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -109,8 +118,18 @@
     
     <url>
     
+      <loc>/willsmorgan.github.io/tags/penalized-regression/</loc>
+      <lastmod>2018-09-03T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/willsmorgan.github.io/post/</loc>
-      <lastmod>2018-07-27T00:00:00+00:00</lastmod>
+      <lastmod>2018-09-03T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     

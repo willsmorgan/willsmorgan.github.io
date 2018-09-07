@@ -11,6 +11,98 @@
     <atom:link href="/willsmorgan.github.io/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Solving Collinearity with Penalized Regression</title>
+      <link>/willsmorgan.github.io/post/solving-collinearity-with-penalized-regression/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/willsmorgan.github.io/post/solving-collinearity-with-penalized-regression/</guid>
+      <description>&lt;div id=&#34;motivation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Motivation&lt;/h2&gt;
+&lt;p&gt;One of my colleagues has been working on a project analysing a particular type of student survey data. The data is partitioned into a handful of sub-surveys measuring (essentially) different categorizations of non-cognitive skills and personality/learning traits. One aim of the project was to evaluate how combinations of metrics from the individual tests could be used to predict student outcomes. There were over 100 variables he was intending to analyze, many of which had seemingly overlapping definitions, so collinearity was a big concern going into it. To get around the problem, this researcher chose to use penalized linear regression, claiming that it “solved” the problem of multicollinearity. I wasn’t familiar enough with the mechanics of the technique, so I decided to investigate more and find out what was going on underneath the hood.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-is-multicollinearity&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is (multi)collinearity?&lt;/h2&gt;
+&lt;p&gt;In layman’s terms, collinearity occurs when some of the information being used to make predictions on a particular outcome is redundant. For example, say I tell you to predict a person’s wage given the number of years of education they have and their highest achieved degree. Although they aren’t exactly the same, you could almost perfectly predict their highest achieved degree by checking the number of years they’ve been in school. A person who’s completed 12 years of education is likely to only have their high school diploma, someone with 16 years will probably have their undergraduate degree, and so on. This situation doesn’t exemplify &lt;strong&gt;perfect&lt;/strong&gt; collinearity, but the fact that these two bits of information are highly correlated can cause problems in linear regression. Likewise, multicollinearity can be thought of in the same way - redundant information. It is slightly more difficult to identify, but the idea is the same. Multicollinearity occurs when one variable can be explained by a combination of other variables.&lt;/p&gt;
+&lt;p&gt;Mathematically, perfect collinearity is defined as two variables &lt;span class=&#34;math inline&#34;&gt;\(X_1\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(X_2\)&lt;/span&gt; having an exactly linear relationship. That is, there exist two scalars &lt;span class=&#34;math inline&#34;&gt;\(a_0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(a_1\)&lt;/span&gt;, at least one nonzero, such that:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[X_2 = a_0 + a_1X_1\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;For reasons I’ll show later, we aren’t necessarily worried about &lt;em&gt;perfect&lt;/em&gt; collinearity - the more common scenario is &lt;em&gt;near-perfect&lt;/em&gt; collinearity. This definition is actually just an application of linear dependence, so the more general definition can just be rephrased as such - collinearity is defined as the existence of &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt; constants &lt;span class=&#34;math inline&#34;&gt;\(a_1,\dotsb, a_p\)&lt;/span&gt;, not all zero, such that &lt;span class=&#34;math inline&#34;&gt;\(\sum_{i=1}^p a_iX_i = 0\)&lt;/span&gt;. In matrix notation,&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\boldsymbol{X}\boldsymbol{a} = \boldsymbol{0}\]&lt;/span&gt;,&lt;/p&gt;
+&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{a}\)&lt;/span&gt; is a &lt;span class=&#34;math inline&#34;&gt;\(p \times 1\)&lt;/span&gt; vector with at least one nonzero entry and &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{X}\)&lt;/span&gt; is the &lt;span class=&#34;math inline&#34;&gt;\(n \times p\)&lt;/span&gt; model matrix.&lt;/p&gt;
+&lt;p&gt;As you can imagine, checking for collinearity can be as simple as looking for perfect correlation. Multicollinearity is not as simple, but many choose to look at the Variance Inflation Factor (VIF). I won’t go into further detail here, but VIF is essentially a measure of how much one variable is explained by the rest of the variables in your data.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;effects-of-multicollinearity&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Effects of Multicollinearity&lt;/h2&gt;
+&lt;p&gt;In the general sense, presence of multicollinearity can impact the validity of our parameter estimates. Theoretically it can keep us from finding a unique set of solutions, but more often the worry is about the variance (and standard error) of the estimates. In particular, recall the solution to the standard multiple regression problem:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\hat{\beta} = (\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;First of all, for there be a unique solution for &lt;span class=&#34;math inline&#34;&gt;\(\hat{\beta}\)&lt;/span&gt; we need to guarantee that &lt;span class=&#34;math inline&#34;&gt;\((\boldsymbol{X}^{T}\boldsymbol{X})\)&lt;/span&gt; is invertible. When &lt;span class=&#34;math inline&#34;&gt;\(X\)&lt;/span&gt; has linearly dependent columns, then there exists a vector &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{a}\)&lt;/span&gt; (not all zero) such that:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\boldsymbol{X}\boldsymbol{a} = 0\]&lt;/span&gt; If this is the case, then:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\|\boldsymbol{X}\boldsymbol{a}\|_2^{2} = \boldsymbol{a}^{T}\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{a} = 0\]&lt;/span&gt;,&lt;/p&gt;
+&lt;p&gt;and since &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{a}\)&lt;/span&gt; is a nonzero vector, &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{X}^{T}\boldsymbol{X}\)&lt;/span&gt; is not positive definite. Hence, &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{X}^{T}\boldsymbol{X}\)&lt;/span&gt; is not invertible.&lt;/p&gt;
+&lt;p&gt;In the case that our predictors are &lt;strong&gt;nearly&lt;/strong&gt; collinear the matrix will still have an inverse, but the entries in that matrix will be massive. This is worrisome when we consider the equation for the variance of the estimates:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[Var[\hat{\beta}] = \boldsymbol{\sigma^2}(\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;As this value increases the precision of our estimates worsen, making us far less certain about the range of possible values each estimate can take on. To illustrate, I’ll create a 3-column matrix, where the first two columns are random pulls from the standard normal distribution and the third column is a linear combination of the first two.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(18)
+
+### Create (almost) collinear matrix
+x1 &amp;lt;- rnorm(10000)
+x2 &amp;lt;- rnorm(10000)
+x3 &amp;lt;- 3*x1 + 4*x2 + rnorm(10000, sd = 0.0001)        # add a teeny bit of noise
+
+X1 = matrix(c(x1, x2, x3), nrow = 10000) 
+
+# Check for large values
+solve(t(X1) %*% X1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##           [,1]      [,2]       [,3]
+## [1,]  88747.42 118329.88 -29582.469
+## [2,] 118329.88 157773.15 -39443.288
+## [3,] -29582.47 -39443.29   9860.822&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;penalized-regression-and-collinearity&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Penalized Regression and Collinearity&lt;/h2&gt;
+&lt;p&gt;Now that we understand the impact of collinearity, we can easily see how penalized regression addressess the issue. First, let’s first observe the solution the ridge regression problem (the results are the same for lasso regression):&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\hat{\beta} = (\boldsymbol{X}^{T}\boldsymbol{X} + \lambda I)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;We are primarily concerned about finding that inverse - how do we know that the inverse exists, even when &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{X}^{T}\boldsymbol{X}\)&lt;/span&gt; is not? We’ll use same method used above to prove the invertibility - by checking if the matrix is positive definite. First, let &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{a}\)&lt;/span&gt; be any nonzero vector of length &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt;. Then, observe that:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+  \boldsymbol{a}^{T}(\boldsymbol{X}^{T}\boldsymbol{X} + \lambda I)\boldsymbol{a}\\
+  = \boldsymbol{a}^{T}\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{a} + \boldsymbol{a}^{T}\lambda I\boldsymbol{a} \\
+  = 0 + \lambda \boldsymbol{a}^{T}\boldsymbol{a} \\
+  = \lambda \|\boldsymbol{a}\|_2^{2}
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Both terms are positive, so &lt;span class=&#34;math inline&#34;&gt;\(\lambda \|\boldsymbol{a}\|_2^{2} &amp;gt; 0\)&lt;/span&gt;, implying that the matrix is positive definite and hence invertible. This solves our first problem with the uniqueness of solutions. We now need to see how this affects the size of the values in the inverted matrix to verify if it decreases the variance.&lt;/p&gt;
+&lt;p&gt;I’ll begin by taking the Frobenius norm of the inverse when &lt;span class=&#34;math inline&#34;&gt;\(\lambda = 0\)&lt;/span&gt; to get a sense of the magnitude of the values in the original matrix. Then, I’ll test a sequence of &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt; values to see how the norm changes as the penalty is increased. This isn’t the most formal test, but it will at least make clear how the inverse matrix changes (and hence the variance of the estimates) in &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;lambda &amp;lt;-  seq(0, 100,  by = 1)
+
+norms &amp;lt;- vector(mode = &amp;#39;numeric&amp;#39;, length = 101)
+for (i in seq_along(lambda)) {
+  norms[i] &amp;lt;- Matrix::norm(solve(t(X1) %*% X1 + lambda[i]*diag(3)))
+}
+
+data.frame(penalty = lambda, matrix_norm = norms) %&amp;gt;%
+  ggplot(., aes(penalty, log(matrix_norm))) + 
+  geom_line() + 
+  labs(title = &amp;quot;Matrix norm as a function of Lambda&amp;quot;) + 
+  theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/willsmorgan.github.io/willsmorgan.github.io/post/2018-09-03-solving-collinearity-with-penalized-regression_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Clearly, the regularization has a huge effect on the norm of the matrix - I even had to log the norm to make the graph more readable (otherwise it’d look like an L and wouldn’t be that interesting). This is the result we were looking for - the penalty helps keep down the variance of the estimates. This shouldn’t be terribly surprising, as that is the exact purpose of this technique. Ridge and lasso regression intentionally bias the coefficient estimates toward zero in order to shrink their variance for more generalizable results - it just so happens that it also solves the issue of collinearity.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;takeaways&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Takeaways&lt;/h2&gt;
+&lt;p&gt;Theoretically, multicollinearity can be a pretty nasty issue. It gives us an infinite amount of solutions for the parameter estimates, basically shutting down the entire problem. Practically speaking, perfect multicollinearity will almost never happen unless you have some sort of redundant coding scheme in your categorical variables (which is part of the reason why you have to leave one level out as your “base” level). When the issue does arise, it will most likely be a case of near-perfect multicollinearity. This also has some worrisome effects on our estimates, as their standard errors start to blow up, widening the confidence intervals. Penalized regression fortunately does not suffer from this because of the nature of the solutions. That is not to say however that penalized regression is meant to be used as a solution to the multicollinearity problem - it is intended more for walking the bias-variance tradeoff. If you do happen to end up with a dataset suffering from multicollinearity, you should be doing some serious inspection on the individual variables instead of jumping immediately to penalized regression.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sources&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Sources:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/lecture-17.pdf&#34;&gt;Lecture Notes&lt;/a&gt; from CMU’s Cosma Shalizi&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Daniel Seita’s &lt;a href=&#34;https://danieltakeshi.github.io/2016/08/05/a-useful-matrix-inverse-equality-for-ridge-regression/&#34;&gt;blog post&lt;/a&gt; on Ridge Regression inequalities&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://www.math.harvard.edu/archive/20_spring_05/handouts/ch05_notes.pdf&#34;&gt;More Lecture Notes&lt;/a&gt; from a Harvard Math 20 section on eigenstuffs&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Book Discussion - Mostly Harmless Econometrics: Chapter 2</title>
       <link>/willsmorgan.github.io/post/book-discussion-mostly-harmless-econometrics-chapter-2/</link>
       <pubDate>Fri, 27 Jul 2018 00:00:00 +0000</pubDate>
